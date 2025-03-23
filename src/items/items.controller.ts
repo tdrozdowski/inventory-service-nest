@@ -1,8 +1,10 @@
 import {
+  BadRequestException,
   Body,
   Controller,
   Delete,
   Get,
+  NotFoundException,
   Param,
   Post,
   Put,
@@ -20,13 +22,21 @@ export class ItemsController {
   }
 
   @Get('alt/:altId')
-  findByAltId(@Param('altId') altId: string): Promise<Item> {
-    return this.itemsService.findByAltId(altId);
+  async findByAltId(@Param('altId') altId: string): Promise<Item> {
+    const item = await this.itemsService.findByAltId(altId);
+    if (!item) {
+      throw new NotFoundException(`Item with alt_id ${altId} not found`);
+    }
+    return item;
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string): Promise<Item> {
-    return this.itemsService.findOne(+id);
+  async findOne(@Param('id') id: string): Promise<Item> {
+    const item = await this.itemsService.findOne(+id);
+    if (!item) {
+      throw new NotFoundException(`Item with ID ${id} not found`);
+    }
+    return item;
   }
 
   @Post()
@@ -35,11 +45,21 @@ export class ItemsController {
   }
 
   @Put(':id')
-  update(
+  async update(
     @Param('id') id: string,
     @Body() updateItemDto: Partial<Item>,
   ): Promise<Item> {
-    return this.itemsService.update(+id, updateItemDto);
+    const itemId = +id;
+    if (isNaN(itemId)) {
+      throw new BadRequestException(`Invalid item ID: ${id}`);
+    }
+
+    const updatedItem = await this.itemsService.update(itemId, updateItemDto);
+    if (!updatedItem) {
+      throw new NotFoundException(`Item with ID ${id} not found`);
+    }
+
+    return updatedItem;
   }
 
   @Delete(':id')

@@ -61,16 +61,6 @@ describe('InvoicesItemsService', () => {
     jest.clearAllMocks();
 
     // Setup the repository mock methods for each test
-    const repositoryInstance = repository as unknown as {
-      findAll: jest.Mock;
-      findByInvoiceId: jest.Mock;
-      findByItemId: jest.Mock;
-      findOne: jest.Mock;
-      create: jest.Mock;
-      remove: jest.Mock;
-      removeByInvoiceId: jest.Mock;
-      removeByItemId: jest.Mock;
-    };
   });
 
   it('should be defined', () => {

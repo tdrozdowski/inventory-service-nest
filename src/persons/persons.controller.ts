@@ -3,6 +3,7 @@ import {
   Controller,
   Delete,
   Get,
+  NotFoundException,
   Param,
   Post,
   Put,
@@ -20,18 +21,30 @@ export class PersonsController {
   }
 
   @Get('alt/:altId')
-  findByAltId(@Param('altId') altId: string): Promise<Person> {
-    return this.personsService.findByAltId(altId);
+  async findByAltId(@Param('altId') altId: string): Promise<Person> {
+    const person = await this.personsService.findByAltId(altId);
+    if (!person) {
+      throw new NotFoundException(`Person with alt_id ${altId} not found`);
+    }
+    return person;
   }
 
   @Get('email/:email')
-  findByEmail(@Param('email') email: string): Promise<Person> {
-    return this.personsService.findByEmail(email);
+  async findByEmail(@Param('email') email: string): Promise<Person> {
+    const person = await this.personsService.findByEmail(email);
+    if (!person) {
+      throw new NotFoundException(`Person with email ${email} not found`);
+    }
+    return person;
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string): Promise<Person> {
-    return this.personsService.findOne(+id);
+  async findOne(@Param('id') id: string): Promise<Person> {
+    const person = await this.personsService.findOne(+id);
+    if (!person) {
+      throw new NotFoundException(`Person with ID ${id} not found`);
+    }
+    return person;
   }
 
   @Post()

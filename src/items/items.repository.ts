@@ -1,10 +1,11 @@
 import { Injectable } from '@nestjs/common';
-import { InjectKnex, Knex } from 'nest-knexjs';
+import { InjectConnection } from 'nest-knexjs';
+import { Knex } from 'knex';
 import { Item } from './items.interface';
 
 @Injectable()
 export class ItemsRepository {
-  constructor(@InjectKnex() private readonly knex: Knex) {}
+  constructor(@InjectConnection() private readonly knex: Knex) {}
 
   async findAll(): Promise<Item[]> {
     return this.knex.table('items').select('*');

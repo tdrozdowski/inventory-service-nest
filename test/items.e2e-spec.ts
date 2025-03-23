@@ -34,54 +34,53 @@ describe('ItemsController (e2e)', () => {
     await app.close();
   });
 
-  it('should create an item', () => {
-    return request(app.getHttpServer())
+  it('should create an item', async () => {
+    const response = await request(app.getHttpServer())
       .post('/items')
       .send(testItem)
-      .expect(201)
-      .expect((res) => {
-        expect(res.body).toHaveProperty('id');
-        expect(res.body).toHaveProperty('alt_id');
-        expect(res.body.name).toBe(testItem.name);
-        expect(res.body.description).toBe(testItem.description);
-        expect(res.body.unit_price).toBe(testItem.unit_price);
+      .expect(201);
 
-        // Save the created item ID for later tests
-        createdItemId = res.body.id;
-      });
+    expect(response.body).toHaveProperty('id');
+    expect(response.body).toHaveProperty('alt_id');
+    expect(response.body.name).toBe(testItem.name);
+    expect(response.body.description).toBe(testItem.description);
+    expect(parseFloat(response.body.unit_price)).toEqual(testItem.unit_price);
+
+    // Save the created item ID for later tests
+    createdItemId = response.body.id;
+    console.log('Created item ID:', createdItemId);
   });
 
-  it('should get all items', () => {
-    return request(app.getHttpServer())
+  it('should get all items', async () => {
+    const response = await request(app.getHttpServer())
       .get('/items')
-      .expect(200)
-      .expect((res) => {
-        expect(Array.isArray(res.body)).toBe(true);
-        expect(res.body.length).toBeGreaterThan(0);
-      });
+      .expect(200);
+
+    expect(Array.isArray(response.body)).toBe(true);
+    expect(response.body.length).toBeGreaterThan(0);
   });
 
-  it('should get an item by ID', () => {
-    return request(app.getHttpServer())
+  it('should get an item by ID', async () => {
+    console.log('Getting item with ID:', createdItemId);
+    const response = await request(app.getHttpServer())
       .get(`/items/${createdItemId}`)
-      .expect(200)
-      .expect((res) => {
-        expect(res.body).toHaveProperty('id', createdItemId);
-        expect(res.body.name).toBe(testItem.name);
-      });
+      .expect(200);
+
+    expect(response.body).toHaveProperty('id', createdItemId);
+    expect(response.body.name).toBe(testItem.name);
   });
 
-  it('should update an item', () => {
-    return request(app.getHttpServer())
+  it('should update an item', async () => {
+    console.log('Updating item with ID:', createdItemId);
+    const response = await request(app.getHttpServer())
       .put(`/items/${createdItemId}`)
       .send(updatedItem)
-      .expect(200)
-      .expect((res) => {
-        expect(res.body).toHaveProperty('id', createdItemId);
-        expect(res.body.name).toBe(updatedItem.name);
-        expect(res.body.description).toBe(updatedItem.description);
-        expect(res.body.unit_price).toBe(updatedItem.unit_price);
-      });
+      .expect(200);
+
+    expect(response.body).toHaveProperty('id', createdItemId);
+    expect(response.body.name).toBe(updatedItem.name);
+    expect(response.body.description).toBe(updatedItem.description);
+    expect(parseFloat(response.body.unit_price)).toEqual(updatedItem.unit_price);
   });
 
   it('should delete an item', () => {

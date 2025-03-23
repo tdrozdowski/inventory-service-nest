@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Get, NotFoundException, Param, Post } from '@nestjs/common';
 import { InvoicesItemsService } from './invoices-items.service';
 import { InvoiceItem } from './invoices-items.interface';
 
@@ -24,24 +24,20 @@ export class InvoicesItemsController {
   }
 
   @Get(':invoiceId/:itemId')
-  findOne(
+  async findOne(
     @Param('invoiceId') invoiceId: string,
     @Param('itemId') itemId: string,
   ): Promise<InvoiceItem> {
-    return this.invoicesItemsService.findOne(invoiceId, itemId);
+    const invoiceItem = await this.invoicesItemsService.findOne(invoiceId, itemId);
+    if (!invoiceItem) {
+      throw new NotFoundException(`Invoice item with invoice_id ${invoiceId} and item_id ${itemId} not found`);
+    }
+    return invoiceItem;
   }
 
   @Post()
   create(@Body() createInvoiceItemDto: InvoiceItem): Promise<InvoiceItem> {
     return this.invoicesItemsService.create(createInvoiceItemDto);
-  }
-
-  @Delete(':invoiceId/:itemId')
-  remove(
-    @Param('invoiceId') invoiceId: string,
-    @Param('itemId') itemId: string,
-  ): Promise<void> {
-    return this.invoicesItemsService.remove(invoiceId, itemId);
   }
 
   @Delete('invoice/:invoiceId')
@@ -52,5 +48,13 @@ export class InvoicesItemsController {
   @Delete('item/:itemId')
   removeByItemId(@Param('itemId') itemId: string): Promise<void> {
     return this.invoicesItemsService.removeByItemId(itemId);
+  }
+
+  @Delete(':invoiceId/:itemId')
+  remove(
+    @Param('invoiceId') invoiceId: string,
+    @Param('itemId') itemId: string,
+  ): Promise<void> {
+    return this.invoicesItemsService.remove(invoiceId, itemId);
   }
 }

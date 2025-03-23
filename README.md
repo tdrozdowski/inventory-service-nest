@@ -250,6 +250,64 @@ When using Docker Compose, the application will automatically:
 2. Seed the database with initial data
 3. Start the application in production mode
 
+## GitHub Actions
+
+This project uses GitHub Actions for continuous integration and testing. There are two main workflows:
+
+1. **Unit Tests Workflow** (`.github/workflows/unit-tests.yml`): Runs linting, unit tests, and test coverage.
+2. **E2E Tests Workflow** (`.github/workflows/e2e-tests.yml`): Runs end-to-end tests with a PostgreSQL database.
+
+### Testing GitHub Actions Locally
+
+You can test GitHub Actions locally using [act](https://github.com/nektos/act), a tool that runs GitHub Actions locally using Docker.
+
+#### Installation
+
+First, install `act` following the instructions on the [official GitHub repository](https://github.com/nektos/act#installation).
+
+For macOS:
+```bash
+brew install act
+```
+
+For Linux:
+```bash
+curl -s https://raw.githubusercontent.com/nektos/act/master/install.sh | sudo bash
+```
+
+For Windows:
+```bash
+choco install act-cli
+```
+
+#### Running GitHub Actions Locally
+
+Once `act` is installed, you can use the following npm scripts to test the GitHub Actions workflows locally:
+
+```bash
+# Test the unit tests workflow
+$ npm run test:github-actions:unit
+
+# Test the e2e tests workflow
+$ npm run test:github-actions:e2e
+```
+
+These commands will run the respective GitHub Actions workflows locally using Docker, simulating the same environment as GitHub's runners.
+
+#### Requirements
+
+- Docker must be installed and running on your machine
+- Sufficient disk space for Docker images
+- Internet connection to download Docker images (first run only)
+
+#### Troubleshooting
+
+If you encounter any issues with `act`:
+
+1. Make sure Docker is running
+2. Try running with increased verbosity: `act -v`
+3. Check the [act documentation](https://github.com/nektos/act#commands) for more options
+
 ## Resources
 
 Check out a few resources that may come in handy when working with NestJS:

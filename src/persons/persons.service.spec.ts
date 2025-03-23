@@ -68,15 +68,6 @@ describe('PersonsService', () => {
     jest.clearAllMocks();
 
     // Setup the repository mock methods for each test
-    const repositoryInstance = repository as unknown as {
-      findAll: jest.Mock;
-      findOne: jest.Mock;
-      findByAltId: jest.Mock;
-      findByEmail: jest.Mock;
-      create: jest.Mock;
-      update: jest.Mock;
-      remove: jest.Mock;
-    };
   });
 
   it('should be defined', () => {

@@ -3,6 +3,7 @@ import {
   Controller,
   Delete,
   Get,
+  NotFoundException,
   Param,
   Post,
   Put,
@@ -20,8 +21,12 @@ export class InvoicesController {
   }
 
   @Get('alt/:altId')
-  findByAltId(@Param('altId') altId: string): Promise<Invoice> {
-    return this.invoicesService.findByAltId(altId);
+  async findByAltId(@Param('altId') altId: string): Promise<Invoice> {
+    const invoice = await this.invoicesService.findByAltId(altId);
+    if (!invoice) {
+      throw new NotFoundException(`Invoice with alt_id ${altId} not found`);
+    }
+    return invoice;
   }
 
   @Get('user/:userId')
@@ -30,8 +35,12 @@ export class InvoicesController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string): Promise<Invoice> {
-    return this.invoicesService.findOne(+id);
+  async findOne(@Param('id') id: string): Promise<Invoice> {
+    const invoice = await this.invoicesService.findOne(+id);
+    if (!invoice) {
+      throw new NotFoundException(`Invoice with ID ${id} not found`);
+    }
+    return invoice;
   }
 
   @Post()

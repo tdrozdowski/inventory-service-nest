@@ -3,16 +3,25 @@ import { INestApplication } from '@nestjs/common';
 import * as request from 'supertest';
 import { AppModule } from './../src/app.module';
 import { Invoice } from '../src/invoices/invoices.interface';
+import { Person } from '../src/persons/persons.interface';
 
 describe('InvoicesController (e2e)', () => {
   let app: INestApplication;
   let createdInvoiceId: number;
+  let createdPersonId: number;
+  let personAltId: string;
 
-  // Test invoice data
+  // Test person data
+  const testPerson: Omit<Person, 'id' | 'alt_id'> = {
+    name: 'Test Person for Invoice',
+    email: 'test.invoice.person@example.com',
+  };
+
+  // Test invoice data (user_id will be set in beforeAll)
   const testInvoice: Omit<Invoice, 'id' | 'alt_id'> = {
     total: 100.5,
     paid: false,
-    user_id: 'test-user-123',
+    user_id: '', // Will be set after creating a person
   };
 
   const updatedInvoice = {
@@ -27,9 +36,27 @@ describe('InvoicesController (e2e)', () => {
 
     app = moduleFixture.createNestApplication();
     await app.init();
+
+    // Create a test person first
+    const personResponse = await request(app.getHttpServer())
+      .post('/persons')
+      .send(testPerson);
+
+    createdPersonId = personResponse.body.id;
+    personAltId = personResponse.body.alt_id;
+
+    // Set the user_id for the test invoice
+    testInvoice.user_id = personAltId;
   });
 
   afterAll(async () => {
+    // Clean up the test person after all tests
+    if (createdPersonId) {
+      await request(app.getHttpServer())
+        .delete(`/persons/${createdPersonId}`)
+        .expect(200);
+    }
+
     await app.close();
   });
 
@@ -41,7 +68,7 @@ describe('InvoicesController (e2e)', () => {
       .expect((res) => {
         expect(res.body).toHaveProperty('id');
         expect(res.body).toHaveProperty('alt_id');
-        expect(res.body.total).toBe(testInvoice.total);
+        expect(parseFloat(res.body.total)).toEqual(testInvoice.total);
         expect(res.body.paid).toBe(testInvoice.paid);
         expect(res.body.user_id).toBe(testInvoice.user_id);
 
@@ -66,7 +93,7 @@ describe('InvoicesController (e2e)', () => {
       .expect(200)
       .expect((res) => {
         expect(res.body).toHaveProperty('id', createdInvoiceId);
-        expect(res.body.total).toBe(testInvoice.total);
+        expect(parseFloat(res.body.total)).toEqual(testInvoice.total);
         expect(res.body.paid).toBe(testInvoice.paid);
         expect(res.body.user_id).toBe(testInvoice.user_id);
       });
@@ -90,7 +117,7 @@ describe('InvoicesController (e2e)', () => {
       .expect(200)
       .expect((res) => {
         expect(res.body).toHaveProperty('id', createdInvoiceId);
-        expect(res.body.total).toBe(updatedInvoice.total);
+        expect(parseFloat(res.body.total)).toEqual(updatedInvoice.total);
         expect(res.body.paid).toBe(updatedInvoice.paid);
         expect(res.body.user_id).toBe(testInvoice.user_id); // user_id should remain unchanged
       });

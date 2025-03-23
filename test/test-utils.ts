@@ -56,19 +56,39 @@ export async function createTestPerson(
 }
 
 /**
- * Creates a test invoice
+ * Creates a test invoice with a valid user_id
  */
 export async function createTestInvoice(
   app: INestApplication,
-  invoiceData: Omit<Invoice, 'id' | 'alt_id'> = {
+  invoiceData?: Partial<Omit<Invoice, 'id' | 'alt_id'>>,
+): Promise<Invoice> {
+  // Create a test person first to get a valid UUID for user_id
+  const personData = {
+    name: 'Test Person for Invoice',
+    email: `test.invoice.person.${Date.now()}@example.com`,
+  };
+
+  const personResponse = await request(app.getHttpServer())
+    .post('/persons')
+    .send(personData);
+
+  const personAltId = personResponse.body.alt_id;
+
+  // Create the invoice with the person's alt_id as user_id
+  const defaultInvoiceData = {
     total: 100.5,
     paid: false,
-    user_id: 'test-user-123',
-  },
-): Promise<Invoice> {
+    user_id: personAltId,
+  };
+
+  const finalInvoiceData = { ...defaultInvoiceData, ...invoiceData, user_id: personAltId };
+
   const response = await request(app.getHttpServer())
     .post('/invoices')
-    .send(invoiceData);
+    .send(finalInvoiceData);
+
+  // Store the person's id in the invoice object for later cleanup
+  response.body._testPersonId = personResponse.body.id;
 
   return response.body;
 }
@@ -94,15 +114,28 @@ export async function deleteTestPerson(
 }
 
 /**
- * Deletes a test invoice
+ * Deletes a test invoice and its associated person
  */
 export async function deleteTestInvoice(
   app: INestApplication,
   invoiceId: string | number,
+  personId?: string | number,
 ): Promise<void> {
-  await request(app.getHttpServer())
-    .delete(`/invoices/${invoiceId}`)
-    .expect(200);
+  try {
+    // Delete the invoice
+    await request(app.getHttpServer())
+      .delete(`/invoices/${invoiceId}`)
+      .expect(200);
+
+    // If personId is provided, delete the person too
+    if (personId) {
+      await request(app.getHttpServer())
+        .delete(`/persons/${personId}`)
+        .expect(200);
+    }
+  } catch (error) {
+    console.error('Error deleting test invoice or person:', error);
+  }
 }
 
 /**

@@ -5,6 +5,7 @@
   "author": "",
   "private": true,
   "license": "UNLICENSED",
+  "type": "module",
   "scripts": {
     "build": "nest build",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\" \"migrations/**/*.js\" \"seeds/**/*.js\" \"scripts/**/*.js\" \"**/*.json\" \"**/*.yml\" \"**/*.md\" \"knexfile.js\" \".eslintrc.js\"",
@@ -23,7 +24,9 @@
     "migrate:latest": "knex migrate:latest",
     "migrate:rollback": "knex migrate:rollback",
     "seed:make": "knex seed:make",
-    "seed:run": "knex seed:run"
+    "seed:run": "knex seed:run",
+    "test:github-actions:unit": "act -j test -W .github/workflows/unit-tests.yml",
+    "test:github-actions:e2e": "act -j test -W .github/workflows/e2e-tests.yml"
   },
   "dependencies": {
     "@nestjs/common": "^11.0.12",
