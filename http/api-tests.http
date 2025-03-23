@@ -27,7 +27,7 @@ Accept: application/json
 }
 
 ### Update an item
-PUT {{baseUrl}}/items/1
+PUT {{baseUrl}}/items/44
 Content-Type: application/json
 Accept: application/json
 
