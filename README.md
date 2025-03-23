@@ -252,10 +252,55 @@ When using Docker Compose, the application will automatically:
 
 ## GitHub Actions
 
-This project uses GitHub Actions for continuous integration and testing. There are two main workflows:
+This project uses GitHub Actions for continuous integration, testing, and deployment. There are three main workflows:
 
 1. **Unit Tests Workflow** (`.github/workflows/unit-tests.yml`): Runs linting, unit tests, and test coverage.
 2. **E2E Tests Workflow** (`.github/workflows/e2e-tests.yml`): Runs end-to-end tests with a PostgreSQL database.
+3. **Docker Publish Workflow** (`.github/workflows/docker-publish.yml`): Builds and publishes Docker images to GitHub Container Registry (GHCR) using semantic versioning.
+
+### Docker Image Publishing
+
+The Docker Publish workflow automatically builds and publishes Docker images to GitHub Container Registry (GHCR) when:
+
+- A new release is published
+- A new tag with format `v*.*.*` is pushed
+- Code is pushed to the main/master branch
+
+#### Semantic Versioning
+
+The workflow uses semantic versioning (SEMVER) for Docker image tags:
+
+- When a release or tag with format `v1.2.3` is created:
+  - `ghcr.io/username/inventory-service-nest:1.2.3` (full version)
+  - `ghcr.io/username/inventory-service-nest:1.2` (major.minor)
+  - `ghcr.io/username/inventory-service-nest:1` (major)
+
+- When code is pushed to main/master:
+  - `ghcr.io/username/inventory-service-nest:main` (branch name)
+  - `ghcr.io/username/inventory-service-nest:sha-abc123` (commit SHA)
+
+#### Using the Published Docker Images
+
+To pull and run the published Docker image:
+
+```bash
+# Pull the latest version
+$ docker pull ghcr.io/username/inventory-service-nest:latest
+
+# Pull a specific version
+$ docker pull ghcr.io/username/inventory-service-nest:1.2.3
+
+# Run the container
+$ docker run -p 3000:3000 \
+  -e DATABASE_HOST=your-db-host \
+  -e DATABASE_PORT=5432 \
+  -e DATABASE_USER=postgres \
+  -e DATABASE_PASSWORD=your-password \
+  -e DATABASE_NAME=inventory \
+  ghcr.io/username/inventory-service-nest:1.2.3
+```
+
+Replace `username` with your GitHub username or organization name.
 
 ### Testing GitHub Actions Locally
 
@@ -290,6 +335,9 @@ $ npm run test:github-actions:unit
 
 # Test the e2e tests workflow
 $ npm run test:github-actions:e2e
+
+# Test the Docker publish workflow
+$ npm run test:github-actions:docker
 ```
 
 These commands will run the respective GitHub Actions workflows locally using Docker, simulating the same environment as GitHub's runners.
