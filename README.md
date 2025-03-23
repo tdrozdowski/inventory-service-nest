@@ -100,6 +100,24 @@ $ npx jest --config ./test/jest-e2e.json test/items.e2e-spec.ts
 
 Note: Integration tests require a running database. Make sure your database is properly configured and running before executing the tests. You can use the Docker Compose setup to start a test database.
 
+## JetBrains HTTP Client Tests
+
+This project includes HTTP Client test files for testing the API endpoints using JetBrains HTTP Client. These files can be used with JetBrains IDEs (IntelliJ IDEA, WebStorm, etc.) that support the HTTP Client plugin.
+
+### HTTP Client Test Files
+
+- `http/api-tests.http`: Basic tests for all API endpoints
+- `http/advanced-api-tests.http`: Advanced tests with chained requests and complete workflow scenarios
+
+### Features
+
+- Environment variables for different environments (development, production)
+- Chained requests that use the response from previous requests
+- Complete workflow scenarios that demonstrate real-world use cases
+- Tests for all API endpoints organized by module
+
+For more details on how to use the HTTP Client tests, see the [HTTP_CLIENT_TESTS.md](http/HTTP_CLIENT_TESTS.md) file.
+
 ## Database Integration with Knex
 
 This project uses [Knex.js](http://knexjs.org/) as a SQL query builder for database operations. The integration is set up with PostgreSQL, but you can easily switch to another database by changing the configuration and driver.
