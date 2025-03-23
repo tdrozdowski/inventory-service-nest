@@ -1,0 +1,202 @@
+### Environment Variables
+# @name environments
+@development = http://localhost:3000
+@production = https://inventory-service.example.com
+
+# Select the environment to use
+@baseUrl = {{development}}
+
+### Authentication (if needed in the future)
+# @name login
+# POST {{baseUrl}}/auth/login
+# Content-Type: application/json
+#
+# {
+#   "username": "admin",
+#   "password": "password"
+# }
+
+# @authToken = {{login.response.body.token}}
+
+### Items API - Complex Scenarios
+
+# @name createItem
+POST {{baseUrl}}/items
+Content-Type: application/json
+Accept: application/json
+
+{
+  "name": "Test Item for Chaining",
+  "description": "This item will be used in chained requests",
+  "unit_price": 19.99
+}
+
+### Get the created item by ID
+GET {{baseUrl}}/items/{{createItem.response.body.id}}
+Accept: application/json
+
+### Update the created item
+PUT {{baseUrl}}/items/{{createItem.response.body.id}}
+Content-Type: application/json
+Accept: application/json
+
+{
+  "name": "Updated Chained Item",
+  "description": "This item has been updated in a chained request",
+  "unit_price": 29.99
+}
+
+### Persons API - Complex Scenarios
+
+# @name createPerson
+POST {{baseUrl}}/persons
+Content-Type: application/json
+Accept: application/json
+
+{
+  "name": "Test Person for Chaining",
+  "email": "chain-test@example.com"
+}
+
+### Get the created person by ID
+GET {{baseUrl}}/persons/{{createPerson.response.body.id}}
+Accept: application/json
+
+### Update the created person
+PUT {{baseUrl}}/persons/{{createPerson.response.body.id}}
+Content-Type: application/json
+Accept: application/json
+
+{
+  "name": "Updated Chained Person",
+  "email": "updated-chain@example.com"
+}
+
+### Invoices API - Complex Scenarios
+
+# @name createInvoice
+POST {{baseUrl}}/invoices
+Content-Type: application/json
+Accept: application/json
+
+{
+  "total": 49.99,
+  "user_id": "{{createPerson.response.body.id}}",
+  "paid": false
+}
+
+### Get the created invoice by ID
+GET {{baseUrl}}/invoices/{{createInvoice.response.body.id}}
+Accept: application/json
+
+### Update the created invoice
+PUT {{baseUrl}}/invoices/{{createInvoice.response.body.id}}
+Content-Type: application/json
+Accept: application/json
+
+{
+  "total": 59.99,
+  "paid": true
+}
+
+### Invoices-Items API - Complex Scenarios
+
+# @name createInvoiceItem
+POST {{baseUrl}}/invoices-items
+Content-Type: application/json
+Accept: application/json
+
+{
+  "invoice_id": "{{createInvoice.response.body.id}}",
+  "item_id": "{{createItem.response.body.id}}"
+}
+
+### Get the created invoice item
+GET {{baseUrl}}/invoices-items/{{createInvoice.response.body.id}}/{{createItem.response.body.id}}
+Accept: application/json
+
+### Complete Workflow Scenario
+
+# 1. Create a person
+# @name workflowPerson
+POST {{baseUrl}}/persons
+Content-Type: application/json
+Accept: application/json
+
+{
+  "name": "Workflow Test Person",
+  "email": "workflow@example.com"
+}
+
+# 2. Create multiple items
+# @name workflowItem1
+POST {{baseUrl}}/items
+Content-Type: application/json
+Accept: application/json
+
+{
+  "name": "Workflow Item 1",
+  "description": "First item in workflow",
+  "unit_price": 10.99
+}
+
+# @name workflowItem2
+POST {{baseUrl}}/items
+Content-Type: application/json
+Accept: application/json
+
+{
+  "name": "Workflow Item 2",
+  "description": "Second item in workflow",
+  "unit_price": 20.99
+}
+
+# 3. Create an invoice
+# @name workflowInvoice
+POST {{baseUrl}}/invoices
+Content-Type: application/json
+Accept: application/json
+
+{
+  "total": 31.98,
+  "user_id": "{{workflowPerson.response.body.id}}",
+  "paid": false
+}
+
+# 4. Add items to the invoice
+# @name workflowInvoiceItem1
+POST {{baseUrl}}/invoices-items
+Content-Type: application/json
+Accept: application/json
+
+{
+  "invoice_id": "{{workflowInvoice.response.body.id}}",
+  "item_id": "{{workflowItem1.response.body.id}}"
+}
+
+# @name workflowInvoiceItem2
+POST {{baseUrl}}/invoices-items
+Content-Type: application/json
+Accept: application/json
+
+{
+  "invoice_id": "{{workflowInvoice.response.body.id}}",
+  "item_id": "{{workflowItem2.response.body.id}}"
+}
+
+# 5. Get all items for the invoice
+GET {{baseUrl}}/invoices-items/invoice/{{workflowInvoice.response.body.id}}
+Accept: application/json
+
+# 6. Mark the invoice as paid
+PUT {{baseUrl}}/invoices/{{workflowInvoice.response.body.id}}
+Content-Type: application/json
+Accept: application/json
+
+{
+  "paid": true
+}
+
+# 7. Verify the invoice is marked as paid
+GET {{baseUrl}}/invoices/{{workflowInvoice.response.body.id}}
+Accept: application/json

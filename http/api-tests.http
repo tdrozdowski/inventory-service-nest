@@ -1,0 +1,167 @@
+### Environment Variables
+@baseUrl = http://localhost:3000
+
+### Items API Tests
+
+# Get all items
+GET {{baseUrl}}/items
+Accept: application/json
+
+### Get item by ID
+GET {{baseUrl}}/items/1
+Accept: application/json
+
+### Get item by alternative ID
+GET {{baseUrl}}/items/alt/some-alt-id
+Accept: application/json
+
+### Create a new item
+POST {{baseUrl}}/items
+Content-Type: application/json
+Accept: application/json
+
+{
+  "name": "Test Item",
+  "description": "This is a test item",
+  "unit_price": 19.99
+}
+
+### Update an item
+PUT {{baseUrl}}/items/1
+Content-Type: application/json
+Accept: application/json
+
+{
+  "name": "Updated Test Item",
+  "description": "This is an updated test item",
+  "unit_price": 29.99
+}
+
+### Delete an item
+DELETE {{baseUrl}}/items/1
+Accept: application/json
+
+### Persons API Tests
+
+# Get all persons
+GET {{baseUrl}}/persons
+Accept: application/json
+
+### Get person by ID
+GET {{baseUrl}}/persons/1
+Accept: application/json
+
+### Get person by alternative ID
+GET {{baseUrl}}/persons/alt/some-alt-id
+Accept: application/json
+
+### Get person by email
+GET {{baseUrl}}/persons/email/test@example.com
+Accept: application/json
+
+### Create a new person
+POST {{baseUrl}}/persons
+Content-Type: application/json
+Accept: application/json
+
+{
+  "name": "Test Person",
+  "email": "test@example.com"
+}
+
+### Update a person
+PUT {{baseUrl}}/persons/1
+Content-Type: application/json
+Accept: application/json
+
+{
+  "name": "Updated Test Person",
+  "email": "updated@example.com"
+}
+
+### Delete a person
+DELETE {{baseUrl}}/persons/1
+Accept: application/json
+
+### Invoices API Tests
+
+# Get all invoices
+GET {{baseUrl}}/invoices
+Accept: application/json
+
+### Get invoice by ID
+GET {{baseUrl}}/invoices/1
+Accept: application/json
+
+### Get invoice by alternative ID
+GET {{baseUrl}}/invoices/alt/some-alt-id
+Accept: application/json
+
+### Get invoices by user ID
+GET {{baseUrl}}/invoices/user/1
+Accept: application/json
+
+### Create a new invoice
+POST {{baseUrl}}/invoices
+Content-Type: application/json
+Accept: application/json
+
+{
+  "total": 49.99,
+  "user_id": "1",
+  "paid": false
+}
+
+### Update an invoice
+PUT {{baseUrl}}/invoices/1
+Content-Type: application/json
+Accept: application/json
+
+{
+  "total": 59.99,
+  "paid": true
+}
+
+### Delete an invoice
+DELETE {{baseUrl}}/invoices/1
+Accept: application/json
+
+### Invoices-Items API Tests
+
+# Get all invoice items
+GET {{baseUrl}}/invoices-items
+Accept: application/json
+
+### Get invoice items by invoice ID
+GET {{baseUrl}}/invoices-items/invoice/1
+Accept: application/json
+
+### Get invoice items by item ID
+GET {{baseUrl}}/invoices-items/item/1
+Accept: application/json
+
+### Get specific invoice item
+GET {{baseUrl}}/invoices-items/1/1
+Accept: application/json
+
+### Create a new invoice item
+POST {{baseUrl}}/invoices-items
+Content-Type: application/json
+Accept: application/json
+
+{
+  "invoice_id": "1",
+  "item_id": "1"
+}
+
+### Delete a specific invoice item
+DELETE {{baseUrl}}/invoices-items/1/1
+Accept: application/json
+
+### Delete all invoice items for an invoice
+DELETE {{baseUrl}}/invoices-items/invoice/1
+Accept: application/json
+
+### Delete all invoice items for an item
+DELETE {{baseUrl}}/invoices-items/item/1
+Accept: application/json
