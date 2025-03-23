@@ -1,7 +1,6 @@
 import { Body, Controller, Delete, Get, NotFoundException, Param, Post } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiResponse, ApiParam } from '@nestjs/swagger';
 import { InvoicesItemsService } from './invoices-items.service';
-import { InvoiceItem } from './invoices-items.interface';
 import { InvoiceItemDto } from './invoice-item.dto';
 
 @ApiTags('invoices-items')

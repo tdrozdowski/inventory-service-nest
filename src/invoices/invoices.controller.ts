@@ -10,7 +10,6 @@ import {
 } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiResponse, ApiParam } from '@nestjs/swagger';
 import { InvoicesService } from './invoices.service';
-import { Invoice } from './invoices.interface';
 import { CreateInvoiceDto, UpdateInvoiceDto, InvoiceDto } from './invoice.dto';
 
 @ApiTags('invoices')

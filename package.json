@@ -5,6 +5,7 @@
   "author": "",
   "private": true,
   "license": "UNLICENSED",
+  "type": "module",
   "scripts": {
     "build": "nest build",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\" \"migrations/**/*.js\" \"seeds/**/*.js\" \"scripts/**/*.js\" \"**/*.json\" \"**/*.yml\" \"**/*.md\" \"knexfile.js\" \".eslintrc.js\"",

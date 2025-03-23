@@ -11,7 +11,6 @@ import {
 } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiResponse, ApiParam } from '@nestjs/swagger';
 import { ItemsService } from './items.service';
-import { Item } from './items.interface';
 import { CreateItemDto, UpdateItemDto, ItemDto } from './item.dto';
 
 @ApiTags('items')
