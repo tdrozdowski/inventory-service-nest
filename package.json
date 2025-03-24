@@ -112,10 +112,10 @@
   },
   "jest-junit": {
     "suiteName": "jest tests",
-    "outputDirectory": ".",
+    "outputDirectory": "../coverage",
     "outputName": "junit.xml",
     "uniqueOutputName": "false",
-    "classNameTemplate": "{classname}-{title}",
+    "classNameTemplate": "{filepath}",
     "titleTemplate": "{classname}-{title}",
     "ancestorSeparator": " › ",
     "usePathForSuiteName": "true"
