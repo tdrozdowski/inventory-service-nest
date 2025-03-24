@@ -19,16 +19,30 @@ export class ItemsController {
   constructor(private readonly itemsService: ItemsService) {}
 
   @Get()
-  @ApiOperation({ summary: 'Get all items', description: 'Retrieves a list of all items in the inventory' })
-  @ApiResponse({ status: 200, description: 'List of items retrieved successfully', type: [ItemDto] })
+  @ApiOperation({
+    summary: 'Get all items',
+    description: 'Retrieves a list of all items in the inventory',
+  })
+  @ApiResponse({
+    status: 200,
+    description: 'List of items retrieved successfully',
+    type: [ItemDto],
+  })
   async findAll(): Promise<ItemDto[]> {
     return this.itemsService.findAll();
   }
 
   @Get('alt/:altId')
-  @ApiOperation({ summary: 'Get item by alternative ID', description: 'Retrieves an item by its alternative ID' })
+  @ApiOperation({
+    summary: 'Get item by alternative ID',
+    description: 'Retrieves an item by its alternative ID',
+  })
   @ApiParam({ name: 'altId', description: 'Alternative ID of the item' })
-  @ApiResponse({ status: 200, description: 'Item retrieved successfully', type: ItemDto })
+  @ApiResponse({
+    status: 200,
+    description: 'Item retrieved successfully',
+    type: ItemDto,
+  })
   @ApiResponse({ status: 404, description: 'Item not found' })
   async findByAltId(@Param('altId') altId: string): Promise<ItemDto> {
     const item = await this.itemsService.findByAltId(altId);
@@ -39,9 +53,16 @@ export class ItemsController {
   }
 
   @Get(':id')
-  @ApiOperation({ summary: 'Get item by ID', description: 'Retrieves an item by its ID' })
+  @ApiOperation({
+    summary: 'Get item by ID',
+    description: 'Retrieves an item by its ID',
+  })
   @ApiParam({ name: 'id', description: 'ID of the item' })
-  @ApiResponse({ status: 200, description: 'Item retrieved successfully', type: ItemDto })
+  @ApiResponse({
+    status: 200,
+    description: 'Item retrieved successfully',
+    type: ItemDto,
+  })
   @ApiResponse({ status: 404, description: 'Item not found' })
   async findOne(@Param('id') id: string): Promise<ItemDto> {
     const item = await this.itemsService.findOne(+id);
@@ -52,17 +73,31 @@ export class ItemsController {
   }
 
   @Post()
-  @ApiOperation({ summary: 'Create item', description: 'Creates a new item in the inventory' })
-  @ApiResponse({ status: 201, description: 'Item created successfully', type: ItemDto })
+  @ApiOperation({
+    summary: 'Create item',
+    description: 'Creates a new item in the inventory',
+  })
+  @ApiResponse({
+    status: 201,
+    description: 'Item created successfully',
+    type: ItemDto,
+  })
   @ApiResponse({ status: 400, description: 'Invalid input' })
   create(@Body() createItemDto: CreateItemDto): Promise<ItemDto> {
     return this.itemsService.create(createItemDto);
   }
 
   @Put(':id')
-  @ApiOperation({ summary: 'Update item', description: 'Updates an existing item in the inventory' })
+  @ApiOperation({
+    summary: 'Update item',
+    description: 'Updates an existing item in the inventory',
+  })
   @ApiParam({ name: 'id', description: 'ID of the item to update' })
-  @ApiResponse({ status: 200, description: 'Item updated successfully', type: ItemDto })
+  @ApiResponse({
+    status: 200,
+    description: 'Item updated successfully',
+    type: ItemDto,
+  })
   @ApiResponse({ status: 400, description: 'Invalid input' })
   @ApiResponse({ status: 404, description: 'Item not found' })
   async update(
@@ -83,7 +118,10 @@ export class ItemsController {
   }
 
   @Delete(':id')
-  @ApiOperation({ summary: 'Delete item', description: 'Deletes an item from the inventory' })
+  @ApiOperation({
+    summary: 'Delete item',
+    description: 'Deletes an item from the inventory',
+  })
   @ApiParam({ name: 'id', description: 'ID of the item to delete' })
   @ApiResponse({ status: 200, description: 'Item deleted successfully' })
   @ApiResponse({ status: 404, description: 'Item not found' })

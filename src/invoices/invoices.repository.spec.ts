@@ -16,7 +16,7 @@ describe('InvoicesRepository', () => {
     {
       id: 1,
       alt_id: 'invoice-001',
-      total: 100.50,
+      total: 100.5,
       paid: false,
       user_id: 'user-001',
       created_by: 'system',
@@ -118,7 +118,7 @@ describe('InvoicesRepository', () => {
 
   describe('findByUserId', () => {
     it('should return invoices by user_id', async () => {
-      const userInvoices = mockInvoices.filter(i => i.user_id === 'user-001');
+      const userInvoices = mockInvoices.filter((i) => i.user_id === 'user-001');
       mockTable.where.mockImplementation(() => userInvoices);
 
       const result = await repository.findByUserId('user-001');
@@ -132,7 +132,7 @@ describe('InvoicesRepository', () => {
   describe('create', () => {
     it('should create and return a new invoice', async () => {
       const invoiceToCreate = {
-        total: 300.00,
+        total: 300.0,
         paid: false,
         user_id: 'user-003',
       };
@@ -158,8 +158,8 @@ describe('InvoicesRepository', () => {
 
   describe('update', () => {
     it('should update and return an invoice', async () => {
-      const invoiceToUpdate = { total: 150.00 };
-      const updatedInvoice = { ...mockInvoice, total: 150.00 };
+      const invoiceToUpdate = { total: 150.0 };
+      const updatedInvoice = { ...mockInvoice, total: 150.0 };
       mockTable.returning.mockResolvedValue([updatedInvoice]);
 
       const result = await repository.update(1, invoiceToUpdate);

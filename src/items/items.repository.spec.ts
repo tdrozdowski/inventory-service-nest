@@ -289,9 +289,9 @@ describe('ItemsRepository', () => {
       const error = new Error('Database error');
       mockTable.returning.mockRejectedValue(error);
 
-      await expect(repository.update(1, { name: 'Updated Item' })).rejects.toThrow(
-        'Database error',
-      );
+      await expect(
+        repository.update(1, { name: 'Updated Item' }),
+      ).rejects.toThrow('Database error');
       expect(mockKnex.table).toHaveBeenCalledWith('items');
       expect(mockTable.where).toHaveBeenCalledWith('id', 1);
       expect(mockTable.update).toHaveBeenCalledWith({

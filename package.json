@@ -8,11 +8,12 @@
   "type": "module",
   "scripts": {
     "build": "nest build",
+    "clean": "rm -rf dist",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\" \"migrations/**/*.js\" \"seeds/**/*.js\" \"scripts/**/*.js\" \"**/*.json\" \"**/*.yml\" \"**/*.md\" \"knexfile.js\" \".eslintrc.js\"",
     "start": "nest start",
     "start:dev": "nest start --watch",
     "start:debug": "nest start --debug --watch",
-    "start:prod": "node dist/main",
+    "start:prod": "node dist/main.mjs",
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
     "test": "jest",
     "test:junit": "jest --reporters=jest-junit",

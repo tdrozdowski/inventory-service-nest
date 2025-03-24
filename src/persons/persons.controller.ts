@@ -18,16 +18,30 @@ export class PersonsController {
   constructor(private readonly personsService: PersonsService) {}
 
   @Get()
-  @ApiOperation({ summary: 'Get all persons', description: 'Retrieves a list of all persons in the system' })
-  @ApiResponse({ status: 200, description: 'List of persons retrieved successfully', type: [PersonDto] })
+  @ApiOperation({
+    summary: 'Get all persons',
+    description: 'Retrieves a list of all persons in the system',
+  })
+  @ApiResponse({
+    status: 200,
+    description: 'List of persons retrieved successfully',
+    type: [PersonDto],
+  })
   async findAll(): Promise<PersonDto[]> {
     return this.personsService.findAll();
   }
 
   @Get('alt/:altId')
-  @ApiOperation({ summary: 'Get person by alternative ID', description: 'Retrieves a person by their alternative ID' })
+  @ApiOperation({
+    summary: 'Get person by alternative ID',
+    description: 'Retrieves a person by their alternative ID',
+  })
   @ApiParam({ name: 'altId', description: 'Alternative ID of the person' })
-  @ApiResponse({ status: 200, description: 'Person retrieved successfully', type: PersonDto })
+  @ApiResponse({
+    status: 200,
+    description: 'Person retrieved successfully',
+    type: PersonDto,
+  })
   @ApiResponse({ status: 404, description: 'Person not found' })
   async findByAltId(@Param('altId') altId: string): Promise<PersonDto> {
     const person = await this.personsService.findByAltId(altId);
@@ -38,9 +52,16 @@ export class PersonsController {
   }
 
   @Get('email/:email')
-  @ApiOperation({ summary: 'Get person by email', description: 'Retrieves a person by their email address' })
+  @ApiOperation({
+    summary: 'Get person by email',
+    description: 'Retrieves a person by their email address',
+  })
   @ApiParam({ name: 'email', description: 'Email of the person' })
-  @ApiResponse({ status: 200, description: 'Person retrieved successfully', type: PersonDto })
+  @ApiResponse({
+    status: 200,
+    description: 'Person retrieved successfully',
+    type: PersonDto,
+  })
   @ApiResponse({ status: 404, description: 'Person not found' })
   async findByEmail(@Param('email') email: string): Promise<PersonDto> {
     const person = await this.personsService.findByEmail(email);
@@ -51,9 +72,16 @@ export class PersonsController {
   }
 
   @Get(':id')
-  @ApiOperation({ summary: 'Get person by ID', description: 'Retrieves a person by their ID' })
+  @ApiOperation({
+    summary: 'Get person by ID',
+    description: 'Retrieves a person by their ID',
+  })
   @ApiParam({ name: 'id', description: 'ID of the person' })
-  @ApiResponse({ status: 200, description: 'Person retrieved successfully', type: PersonDto })
+  @ApiResponse({
+    status: 200,
+    description: 'Person retrieved successfully',
+    type: PersonDto,
+  })
   @ApiResponse({ status: 404, description: 'Person not found' })
   async findOne(@Param('id') id: string): Promise<PersonDto> {
     const person = await this.personsService.findOne(+id);
@@ -64,19 +92,31 @@ export class PersonsController {
   }
 
   @Post()
-  @ApiOperation({ summary: 'Create person', description: 'Creates a new person in the system' })
-  @ApiResponse({ status: 201, description: 'Person created successfully', type: PersonDto })
+  @ApiOperation({
+    summary: 'Create person',
+    description: 'Creates a new person in the system',
+  })
+  @ApiResponse({
+    status: 201,
+    description: 'Person created successfully',
+    type: PersonDto,
+  })
   @ApiResponse({ status: 400, description: 'Invalid input' })
-  create(
-    @Body() createPersonDto: CreatePersonDto,
-  ): Promise<PersonDto> {
+  create(@Body() createPersonDto: CreatePersonDto): Promise<PersonDto> {
     return this.personsService.create(createPersonDto);
   }
 
   @Put(':id')
-  @ApiOperation({ summary: 'Update person', description: 'Updates an existing person in the system' })
+  @ApiOperation({
+    summary: 'Update person',
+    description: 'Updates an existing person in the system',
+  })
   @ApiParam({ name: 'id', description: 'ID of the person to update' })
-  @ApiResponse({ status: 200, description: 'Person updated successfully', type: PersonDto })
+  @ApiResponse({
+    status: 200,
+    description: 'Person updated successfully',
+    type: PersonDto,
+  })
   @ApiResponse({ status: 400, description: 'Invalid input' })
   @ApiResponse({ status: 404, description: 'Person not found' })
   update(
@@ -87,7 +127,10 @@ export class PersonsController {
   }
 
   @Delete(':id')
-  @ApiOperation({ summary: 'Delete person', description: 'Deletes a person from the system' })
+  @ApiOperation({
+    summary: 'Delete person',
+    description: 'Deletes a person from the system',
+  })
   @ApiParam({ name: 'id', description: 'ID of the person to delete' })
   @ApiResponse({ status: 200, description: 'Person deleted successfully' })
   @ApiResponse({ status: 404, description: 'Person not found' })

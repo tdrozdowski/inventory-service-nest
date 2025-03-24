@@ -80,7 +80,9 @@ describe('ItemsController (e2e)', () => {
     expect(response.body).toHaveProperty('id', createdItemId);
     expect(response.body.name).toBe(updatedItem.name);
     expect(response.body.description).toBe(updatedItem.description);
-    expect(parseFloat(response.body.unit_price)).toEqual(updatedItem.unit_price);
+    expect(parseFloat(response.body.unit_price)).toEqual(
+      updatedItem.unit_price,
+    );
   });
 
   it('should delete an item', () => {

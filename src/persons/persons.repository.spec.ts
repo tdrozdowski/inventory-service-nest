@@ -85,7 +85,10 @@ describe('PersonsRepository', () => {
 
       expect(result).toEqual(mockPerson);
       expect(mockKnex.table).toHaveBeenCalledWith('persons');
-      expect(mockTable.where).toHaveBeenCalledWith('email', 'john.doe@example.com');
+      expect(mockTable.where).toHaveBeenCalledWith(
+        'email',
+        'john.doe@example.com',
+      );
       expect(mockTable.first).toHaveBeenCalled();
     });
   });

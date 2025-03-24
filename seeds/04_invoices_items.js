@@ -50,4 +50,4 @@ export async function seed(knex) {
       item_id: items[2].alt_id,
     },
   ]);
-};
+}

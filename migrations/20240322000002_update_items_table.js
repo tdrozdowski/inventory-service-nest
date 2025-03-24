@@ -12,8 +12,11 @@ export async function up(knex) {
 
     if (!hasAltId) {
       // Add the alt_id column to the existing table
-      await knex.schema.alterTable('items', function(table) {
-        table.uuid('alt_id').notNullable().defaultTo(knex.raw('gen_random_uuid()'));
+      await knex.schema.alterTable('items', function (table) {
+        table
+          .uuid('alt_id')
+          .notNullable()
+          .defaultTo(knex.raw('gen_random_uuid()'));
         table.unique(['alt_id']);
       });
     }
@@ -21,10 +24,13 @@ export async function up(knex) {
     // Check if other required columns exist and add them if they don't
     const hasUnitPrice = await knex.schema.hasColumn('items', 'unit_price');
     const hasCreatedBy = await knex.schema.hasColumn('items', 'created_by');
-    const hasLastChangedBy = await knex.schema.hasColumn('items', 'last_changed_by');
+    const hasLastChangedBy = await knex.schema.hasColumn(
+      'items',
+      'last_changed_by',
+    );
 
     if (!hasUnitPrice || !hasCreatedBy || !hasLastChangedBy) {
-      await knex.schema.alterTable('items', function(table) {
+      await knex.schema.alterTable('items', function (table) {
         if (!hasUnitPrice) {
           table.decimal('unit_price', 15, 2).notNullable().defaultTo(0);
         }
@@ -42,7 +48,10 @@ export async function up(knex) {
     // Create the items table with the correct schema
     return knex.schema.createTable('items', function (table) {
       table.increments('id').primary();
-      table.uuid('alt_id').notNullable().defaultTo(knex.raw('gen_random_uuid()'));
+      table
+        .uuid('alt_id')
+        .notNullable()
+        .defaultTo(knex.raw('gen_random_uuid()'));
       table.string('name', 255).notNullable();
       table.text('description').notNullable();
       table.decimal('unit_price', 15, 2).notNullable();
@@ -61,7 +70,7 @@ export async function up(knex) {
       table.unique(['alt_id']);
     });
   }
-};
+}
 
 /**
  * @param { import("knex").Knex } knex
@@ -80,4 +89,4 @@ export function down(knex) {
       table.timestamps(true, true);
     });
   });
-};
+}

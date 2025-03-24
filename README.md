@@ -271,6 +271,7 @@ The Docker Publish workflow automatically builds and publishes Docker images to 
 The workflow uses semantic versioning (SEMVER) for Docker image tags:
 
 - When a release or tag with format `v1.2.3` is created:
+
   - `ghcr.io/username/inventory-service-nest:1.2.3` (full version)
   - `ghcr.io/username/inventory-service-nest:1.2` (major.minor)
   - `ghcr.io/username/inventory-service-nest:1` (major)
@@ -311,16 +312,19 @@ You can test GitHub Actions locally using [act](https://github.com/nektos/act), 
 First, install `act` following the instructions on the [official GitHub repository](https://github.com/nektos/act#installation).
 
 For macOS:
+
 ```bash
 brew install act
 ```
 
 For Linux:
+
 ```bash
 curl -s https://raw.githubusercontent.com/nektos/act/master/install.sh | sudo bash
 ```
 
 For Windows:
+
 ```bash
 choco install act-cli
 ```

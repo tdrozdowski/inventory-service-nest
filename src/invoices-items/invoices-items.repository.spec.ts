@@ -70,7 +70,9 @@ describe('InvoicesItemsRepository', () => {
 
   describe('findByInvoiceId', () => {
     it('should return invoice items by invoice_id', async () => {
-      const invoiceItems = mockInvoiceItems.filter(i => i.invoice_id === 'invoice-001');
+      const invoiceItems = mockInvoiceItems.filter(
+        (i) => i.invoice_id === 'invoice-001',
+      );
       mockTable.where.mockImplementation(() => invoiceItems);
 
       const result = await repository.findByInvoiceId('invoice-001');
@@ -83,7 +85,9 @@ describe('InvoicesItemsRepository', () => {
 
   describe('findByItemId', () => {
     it('should return invoice items by item_id', async () => {
-      const invoiceItems = mockInvoiceItems.filter(i => i.item_id === 'item-001');
+      const invoiceItems = mockInvoiceItems.filter(
+        (i) => i.item_id === 'item-001',
+      );
       mockTable.where.mockImplementation(() => invoiceItems);
 
       const result = await repository.findByItemId('item-001');

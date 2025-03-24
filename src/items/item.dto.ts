@@ -32,7 +32,9 @@ export class ItemDto {
   @ApiPropertyOptional({ description: 'The unique identifier for the item' })
   id?: number;
 
-  @ApiPropertyOptional({ description: 'An alternative identifier for the item' })
+  @ApiPropertyOptional({
+    description: 'An alternative identifier for the item',
+  })
   alt_id?: string;
 
   @ApiProperty({ description: 'The name of the item' })
@@ -50,7 +52,10 @@ export class ItemDto {
   @ApiPropertyOptional({ description: 'When the item was created', type: Date })
   created_at?: Date;
 
-  @ApiPropertyOptional({ description: 'When the item was last updated', type: Date })
+  @ApiPropertyOptional({
+    description: 'When the item was last updated',
+    type: Date,
+  })
   last_update?: Date;
 
   @ApiPropertyOptional({ description: 'Who last changed the item' })

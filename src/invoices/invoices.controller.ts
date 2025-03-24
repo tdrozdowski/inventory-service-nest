@@ -18,16 +18,30 @@ export class InvoicesController {
   constructor(private readonly invoicesService: InvoicesService) {}
 
   @Get()
-  @ApiOperation({ summary: 'Get all invoices', description: 'Retrieves a list of all invoices in the system' })
-  @ApiResponse({ status: 200, description: 'List of invoices retrieved successfully', type: [InvoiceDto] })
+  @ApiOperation({
+    summary: 'Get all invoices',
+    description: 'Retrieves a list of all invoices in the system',
+  })
+  @ApiResponse({
+    status: 200,
+    description: 'List of invoices retrieved successfully',
+    type: [InvoiceDto],
+  })
   async findAll(): Promise<InvoiceDto[]> {
     return this.invoicesService.findAll();
   }
 
   @Get('alt/:altId')
-  @ApiOperation({ summary: 'Get invoice by alternative ID', description: 'Retrieves an invoice by its alternative ID' })
+  @ApiOperation({
+    summary: 'Get invoice by alternative ID',
+    description: 'Retrieves an invoice by its alternative ID',
+  })
   @ApiParam({ name: 'altId', description: 'Alternative ID of the invoice' })
-  @ApiResponse({ status: 200, description: 'Invoice retrieved successfully', type: InvoiceDto })
+  @ApiResponse({
+    status: 200,
+    description: 'Invoice retrieved successfully',
+    type: InvoiceDto,
+  })
   @ApiResponse({ status: 404, description: 'Invoice not found' })
   async findByAltId(@Param('altId') altId: string): Promise<InvoiceDto> {
     const invoice = await this.invoicesService.findByAltId(altId);
@@ -38,17 +52,31 @@ export class InvoicesController {
   }
 
   @Get('user/:userId')
-  @ApiOperation({ summary: 'Get invoices by user ID', description: 'Retrieves all invoices associated with a specific user' })
+  @ApiOperation({
+    summary: 'Get invoices by user ID',
+    description: 'Retrieves all invoices associated with a specific user',
+  })
   @ApiParam({ name: 'userId', description: 'ID of the user' })
-  @ApiResponse({ status: 200, description: 'List of invoices retrieved successfully', type: [InvoiceDto] })
+  @ApiResponse({
+    status: 200,
+    description: 'List of invoices retrieved successfully',
+    type: [InvoiceDto],
+  })
   async findByUserId(@Param('userId') userId: string): Promise<InvoiceDto[]> {
     return this.invoicesService.findByUserId(userId);
   }
 
   @Get(':id')
-  @ApiOperation({ summary: 'Get invoice by ID', description: 'Retrieves an invoice by its ID' })
+  @ApiOperation({
+    summary: 'Get invoice by ID',
+    description: 'Retrieves an invoice by its ID',
+  })
   @ApiParam({ name: 'id', description: 'ID of the invoice' })
-  @ApiResponse({ status: 200, description: 'Invoice retrieved successfully', type: InvoiceDto })
+  @ApiResponse({
+    status: 200,
+    description: 'Invoice retrieved successfully',
+    type: InvoiceDto,
+  })
   @ApiResponse({ status: 404, description: 'Invoice not found' })
   async findOne(@Param('id') id: string): Promise<InvoiceDto> {
     const invoice = await this.invoicesService.findOne(+id);
@@ -59,19 +87,31 @@ export class InvoicesController {
   }
 
   @Post()
-  @ApiOperation({ summary: 'Create invoice', description: 'Creates a new invoice in the system' })
-  @ApiResponse({ status: 201, description: 'Invoice created successfully', type: InvoiceDto })
+  @ApiOperation({
+    summary: 'Create invoice',
+    description: 'Creates a new invoice in the system',
+  })
+  @ApiResponse({
+    status: 201,
+    description: 'Invoice created successfully',
+    type: InvoiceDto,
+  })
   @ApiResponse({ status: 400, description: 'Invalid input' })
-  create(
-    @Body() createInvoiceDto: CreateInvoiceDto,
-  ): Promise<InvoiceDto> {
+  create(@Body() createInvoiceDto: CreateInvoiceDto): Promise<InvoiceDto> {
     return this.invoicesService.create(createInvoiceDto);
   }
 
   @Put(':id')
-  @ApiOperation({ summary: 'Update invoice', description: 'Updates an existing invoice in the system' })
+  @ApiOperation({
+    summary: 'Update invoice',
+    description: 'Updates an existing invoice in the system',
+  })
   @ApiParam({ name: 'id', description: 'ID of the invoice to update' })
-  @ApiResponse({ status: 200, description: 'Invoice updated successfully', type: InvoiceDto })
+  @ApiResponse({
+    status: 200,
+    description: 'Invoice updated successfully',
+    type: InvoiceDto,
+  })
   @ApiResponse({ status: 400, description: 'Invalid input' })
   @ApiResponse({ status: 404, description: 'Invoice not found' })
   update(
@@ -82,7 +122,10 @@ export class InvoicesController {
   }
 
   @Delete(':id')
-  @ApiOperation({ summary: 'Delete invoice', description: 'Deletes an invoice from the system' })
+  @ApiOperation({
+    summary: 'Delete invoice',
+    description: 'Deletes an invoice from the system',
+  })
   @ApiParam({ name: 'id', description: 'ID of the invoice to delete' })
   @ApiResponse({ status: 200, description: 'Invoice deleted successfully' })
   @ApiResponse({ status: 404, description: 'Invoice not found' })

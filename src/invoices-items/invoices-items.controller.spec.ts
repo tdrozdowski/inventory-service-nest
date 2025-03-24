@@ -91,7 +91,9 @@ describe('InvoicesItemsController', () => {
 
   describe('findByInvoiceId', () => {
     it('should return invoice items by invoice_id', async () => {
-      const invoiceItems = mockInvoiceItems.filter(i => i.invoice_id === 'invoice-001');
+      const invoiceItems = mockInvoiceItems.filter(
+        (i) => i.invoice_id === 'invoice-001',
+      );
       jest.spyOn(service, 'findByInvoiceId').mockResolvedValue(invoiceItems);
 
       const result = await controller.findByInvoiceId('invoice-001');
@@ -122,7 +124,9 @@ describe('InvoicesItemsController', () => {
 
   describe('findByItemId', () => {
     it('should return invoice items by item_id', async () => {
-      const invoiceItems = mockInvoiceItems.filter(i => i.item_id === 'item-001');
+      const invoiceItems = mockInvoiceItems.filter(
+        (i) => i.item_id === 'item-001',
+      );
       jest.spyOn(service, 'findByItemId').mockResolvedValue(invoiceItems);
 
       const result = await controller.findByItemId('item-001');
@@ -164,19 +168,22 @@ describe('InvoicesItemsController', () => {
     it('should throw NotFoundException when invoice item is not found', async () => {
       jest.spyOn(service, 'findOne').mockResolvedValue(null);
 
-      await expect(controller.findOne('non-existent', 'non-existent')).rejects.toThrow(
-        NotFoundException,
+      await expect(
+        controller.findOne('non-existent', 'non-existent'),
+      ).rejects.toThrow(NotFoundException);
+      expect(service.findOne).toHaveBeenCalledWith(
+        'non-existent',
+        'non-existent',
       );
-      expect(service.findOne).toHaveBeenCalledWith('non-existent', 'non-existent');
     });
 
     it('should propagate errors from service', async () => {
       const error = new Error('Service error');
       jest.spyOn(service, 'findOne').mockRejectedValue(error);
 
-      await expect(controller.findOne('invoice-001', 'item-001')).rejects.toThrow(
-        'Service error',
-      );
+      await expect(
+        controller.findOne('invoice-001', 'item-001'),
+      ).rejects.toThrow('Service error');
       expect(service.findOne).toHaveBeenCalledWith('invoice-001', 'item-001');
     });
   });
@@ -255,9 +262,9 @@ describe('InvoicesItemsController', () => {
       const error = new Error('Service error');
       jest.spyOn(service, 'remove').mockRejectedValue(error);
 
-      await expect(controller.remove('invoice-001', 'item-001')).rejects.toThrow(
-        'Service error',
-      );
+      await expect(
+        controller.remove('invoice-001', 'item-001'),
+      ).rejects.toThrow('Service error');
       expect(service.remove).toHaveBeenCalledWith('invoice-001', 'item-001');
     });
   });
