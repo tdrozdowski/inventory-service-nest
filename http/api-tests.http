@@ -4,19 +4,19 @@
 ### Items API Tests
 
 # Get all items
-GET {{baseUrl}}/items
+GET {{baseUrl}}/api/v1/items
 Accept: application/json
 
 ### Get item by ID
-GET {{baseUrl}}/items/1
+GET {{baseUrl}}/api/v1/items/44
 Accept: application/json
 
 ### Get item by alternative ID
-GET {{baseUrl}}/items/alt/some-alt-id
+GET {{baseUrl}}/api/v1/items/alt/some-alt-id
 Accept: application/json
 
 ### Create a new item
-POST {{baseUrl}}/items
+POST {{baseUrl}}/api/v1/items
 Content-Type: application/json
 Accept: application/json
 
@@ -27,7 +27,7 @@ Accept: application/json
 }
 
 ### Update an item
-PUT {{baseUrl}}/items/44
+PUT {{baseUrl}}/api/v1/items/44
 Content-Type: application/json
 Accept: application/json
 
@@ -38,29 +38,29 @@ Accept: application/json
 }
 
 ### Delete an item
-DELETE {{baseUrl}}/items/1
+DELETE {{baseUrl}}/api/v1/items/1
 Accept: application/json
 
 ### Persons API Tests
 
 # Get all persons
-GET {{baseUrl}}/persons
+GET {{baseUrl}}/api/v1/persons
 Accept: application/json
 
 ### Get person by ID
-GET {{baseUrl}}/persons/1
+GET {{baseUrl}}/api/v1/persons/1
 Accept: application/json
 
 ### Get person by alternative ID
-GET {{baseUrl}}/persons/alt/some-alt-id
+GET {{baseUrl}}/api/v1/persons/alt/some-alt-id
 Accept: application/json
 
 ### Get person by email
-GET {{baseUrl}}/persons/email/test@example.com
+GET {{baseUrl}}/api/v1/persons/email/test@example.com
 Accept: application/json
 
 ### Create a new person
-POST {{baseUrl}}/persons
+POST {{baseUrl}}/api/v1/persons
 Content-Type: application/json
 Accept: application/json
 
@@ -70,7 +70,7 @@ Accept: application/json
 }
 
 ### Update a person
-PUT {{baseUrl}}/persons/1
+PUT {{baseUrl}}/api/v1/persons/1
 Content-Type: application/json
 Accept: application/json
 
@@ -80,29 +80,29 @@ Accept: application/json
 }
 
 ### Delete a person
-DELETE {{baseUrl}}/persons/1
+DELETE {{baseUrl}}/api/v1/persons/1
 Accept: application/json
 
 ### Invoices API Tests
 
 # Get all invoices
-GET {{baseUrl}}/invoices
+GET {{baseUrl}}/api/v1/invoices
 Accept: application/json
 
 ### Get invoice by ID
-GET {{baseUrl}}/invoices/1
+GET {{baseUrl}}/api/v1/invoices/1
 Accept: application/json
 
 ### Get invoice by alternative ID
-GET {{baseUrl}}/invoices/alt/some-alt-id
+GET {{baseUrl}}/api/v1/invoices/alt/some-alt-id
 Accept: application/json
 
 ### Get invoices by user ID
-GET {{baseUrl}}/invoices/user/1
+GET {{baseUrl}}/api/v1/invoices/user/1
 Accept: application/json
 
 ### Create a new invoice
-POST {{baseUrl}}/invoices
+POST {{baseUrl}}/api/v1/invoices
 Content-Type: application/json
 Accept: application/json
 
@@ -113,7 +113,7 @@ Accept: application/json
 }
 
 ### Update an invoice
-PUT {{baseUrl}}/invoices/1
+PUT {{baseUrl}}/api/v1/invoices/1
 Content-Type: application/json
 Accept: application/json
 
@@ -123,29 +123,29 @@ Accept: application/json
 }
 
 ### Delete an invoice
-DELETE {{baseUrl}}/invoices/1
+DELETE {{baseUrl}}/api/v1/invoices/1
 Accept: application/json
 
 ### Invoices-Items API Tests
 
 # Get all invoice items
-GET {{baseUrl}}/invoices-items
+GET {{baseUrl}}/api/v1/invoices-items
 Accept: application/json
 
 ### Get invoice items by invoice ID
-GET {{baseUrl}}/invoices-items/invoice/1
+GET {{baseUrl}}/api/v1/invoices-items/invoice/1
 Accept: application/json
 
 ### Get invoice items by item ID
-GET {{baseUrl}}/invoices-items/item/1
+GET {{baseUrl}}/api/v1/invoices-items/item/1
 Accept: application/json
 
 ### Get specific invoice item
-GET {{baseUrl}}/invoices-items/1/1
+GET {{baseUrl}}/api/v1/invoices-items/1/1
 Accept: application/json
 
 ### Create a new invoice item
-POST {{baseUrl}}/invoices-items
+POST {{baseUrl}}/api/v1/invoices-items
 Content-Type: application/json
 Accept: application/json
 
@@ -155,13 +155,13 @@ Accept: application/json
 }
 
 ### Delete a specific invoice item
-DELETE {{baseUrl}}/invoices-items/1/1
+DELETE {{baseUrl}}/api/v1/invoices-items/1/1
 Accept: application/json
 
 ### Delete all invoice items for an invoice
-DELETE {{baseUrl}}/invoices-items/invoice/1
+DELETE {{baseUrl}}/api/v1/invoices-items/invoice/1
 Accept: application/json
 
 ### Delete all invoice items for an item
-DELETE {{baseUrl}}/invoices-items/item/1
+DELETE {{baseUrl}}/api/v1/invoices-items/item/1
 Accept: application/json

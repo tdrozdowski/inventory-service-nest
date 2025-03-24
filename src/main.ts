@@ -20,11 +20,11 @@ async function bootstrap() {
   const outputPath = path.resolve(process.cwd(), 'openapi-spec.json');
   fs.writeFileSync(outputPath, JSON.stringify(document, null, 2));
 
-  // Set up Swagger UI at /api endpoint
-  SwaggerModule.setup('api', app, document);
+  // Set up Swagger UI at /docs endpoint
+  SwaggerModule.setup('docs', app, document);
 
-  // Set up Redoc UI at /api-docs endpoint
-  app.use('/api-docs', (req, res) => {
+  // Set up Redoc UI at /docs-redoc endpoint
+  app.use('/docs-redoc', (req, res) => {
     res.send(`
       <!DOCTYPE html>
       <html>
@@ -44,7 +44,7 @@ async function bootstrap() {
         <body>
           <div id="redoc"></div>
           <script>
-            Redoc.init('/api-json', {
+            Redoc.init('/docs-json', {
               scrollYOffset: 50,
               hideDownloadButton: false,
               theme: {
@@ -60,6 +60,9 @@ async function bootstrap() {
       </html>
     `);
   });
+
+  // Set global prefix for all routes
+  app.setGlobalPrefix('api/v1');
 
   await app.listen(3000);
 }

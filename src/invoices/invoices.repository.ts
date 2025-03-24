@@ -8,19 +8,35 @@ export class InvoicesRepository {
   constructor(@InjectConnection() private readonly knex: Knex) {}
 
   async findAll(): Promise<Invoice[]> {
-    return this.knex.table('invoices').select('*');
+    const invoices = await this.knex.table('invoices').select('*');
+    return invoices.map(invoice => ({
+      ...invoice,
+      total: Number(invoice.total)
+    }));
   }
 
   async findOne(id: number): Promise<Invoice> {
-    return this.knex.table('invoices').where('id', id).first();
+    const invoice = await this.knex.table('invoices').where('id', id).first();
+    if (invoice) {
+      invoice.total = Number(invoice.total);
+    }
+    return invoice;
   }
 
   async findByAltId(altId: string): Promise<Invoice> {
-    return this.knex.table('invoices').where('alt_id', altId).first();
+    const invoice = await this.knex.table('invoices').where('alt_id', altId).first();
+    if (invoice) {
+      invoice.total = Number(invoice.total);
+    }
+    return invoice;
   }
 
   async findByUserId(userId: string): Promise<Invoice[]> {
-    return this.knex.table('invoices').where('user_id', userId);
+    const invoices = await this.knex.table('invoices').where('user_id', userId);
+    return invoices.map(invoice => ({
+      ...invoice,
+      total: Number(invoice.total)
+    }));
   }
 
   async create(invoice: Omit<Invoice, 'id' | 'alt_id'>): Promise<Invoice> {
@@ -32,6 +48,11 @@ export class InvoicesRepository {
       .table('invoices')
       .insert(invoiceToCreate)
       .returning('*');
+
+    if (result) {
+      result.total = Number(result.total);
+    }
+
     return result;
   }
 
@@ -46,6 +67,11 @@ export class InvoicesRepository {
       .where('id', id)
       .update(invoiceToUpdate)
       .returning('*');
+
+    if (result) {
+      result.total = Number(result.total);
+    }
+
     return result;
   }
 
