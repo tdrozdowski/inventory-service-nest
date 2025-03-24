@@ -20,9 +20,11 @@
     "test": "jest",
     "test:junit": "jest --reporters=jest-junit",
     "test:watch": "jest --watch",
-    "test:cov": "jest --coverage",
+    "test:cov": "jest --coverage --reporters=default --reporters=jest-junit",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./test/jest-e2e.json",
+    "test:e2e:cov": "jest --config ./test/jest-e2e.json --coverage --reporters=default --reporters=jest-junit",
+    "test:cov:all": "npm run test:cov && npm run test:e2e:cov",
     "knex": "knex",
     "migrate:make": "knex migrate:make",
     "migrate:latest": "knex migrate:latest",
@@ -40,6 +42,7 @@
     "@nestjs/platform-express": "^11.0.12",
     "@nestjs/swagger": "^11.0.7",
     "dotenv": "^16.3.1",
+    "istanbul-reports": "^3.1.7",
     "knex": "^3.1.0",
     "nest-knexjs": "^0.0.26",
     "pg": "^8.14.1",
@@ -75,6 +78,22 @@
     "typescript-eslint": "^8.27.0"
   },
   "jest": {
+    "collectCoverage" : true,
+    "coverageReporters": [
+      "text",
+      "text-summary",
+      "lcov",
+      "html",
+      "json-summary"
+    ],
+    "coverageThreshold": {
+      "global": {
+        "branches": 75,
+        "functions": 75,
+        "lines": 75,
+        "statements": 75
+      }
+    },
     "moduleFileExtensions": [
       "js",
       "json",
@@ -90,5 +109,15 @@
     ],
     "coverageDirectory": "../coverage",
     "testEnvironment": "node"
+  },
+  "jest-junit": {
+    "suiteName": "jest tests",
+    "outputDirectory": ".",
+    "outputName": "junit.xml",
+    "uniqueOutputName": "false",
+    "classNameTemplate": "{classname}-{title}",
+    "titleTemplate": "{classname}-{title}",
+    "ancestorSeparator": " › ",
+    "usePathForSuiteName": "true"
   }
 }
