@@ -66,6 +66,25 @@ describe('InvoicesItemsRepository', () => {
       expect(mockKnex.table).toHaveBeenCalledWith('invoices_items');
       expect(mockTable.select).toHaveBeenCalledWith('*');
     });
+
+    it('should handle empty results', async () => {
+      mockTable.select.mockImplementation(() => []);
+
+      const result = await repository.findAll();
+
+      expect(result).toEqual([]);
+      expect(mockKnex.table).toHaveBeenCalledWith('invoices_items');
+      expect(mockTable.select).toHaveBeenCalledWith('*');
+    });
+
+    it('should propagate database errors', async () => {
+      const error = new Error('Database error');
+      mockTable.select.mockRejectedValue(error);
+
+      await expect(repository.findAll()).rejects.toThrow('Database error');
+      expect(mockKnex.table).toHaveBeenCalledWith('invoices_items');
+      expect(mockTable.select).toHaveBeenCalledWith('*');
+    });
   });
 
   describe('findByInvoiceId', () => {
@@ -78,6 +97,30 @@ describe('InvoicesItemsRepository', () => {
       const result = await repository.findByInvoiceId('invoice-001');
 
       expect(result).toEqual(invoiceItems);
+      expect(mockKnex.table).toHaveBeenCalledWith('invoices_items');
+      expect(mockTable.where).toHaveBeenCalledWith('invoice_id', 'invoice-001');
+    });
+
+    it('should return an empty array when no invoice items exist for the invoice', async () => {
+      mockTable.where.mockImplementation(() => []);
+
+      const result = await repository.findByInvoiceId('non-existent');
+
+      expect(result).toEqual([]);
+      expect(mockKnex.table).toHaveBeenCalledWith('invoices_items');
+      expect(mockTable.where).toHaveBeenCalledWith(
+        'invoice_id',
+        'non-existent',
+      );
+    });
+
+    it('should propagate database errors', async () => {
+      const error = new Error('Database error');
+      mockTable.where.mockRejectedValue(error);
+
+      await expect(repository.findByInvoiceId('invoice-001')).rejects.toThrow(
+        'Database error',
+      );
       expect(mockKnex.table).toHaveBeenCalledWith('invoices_items');
       expect(mockTable.where).toHaveBeenCalledWith('invoice_id', 'invoice-001');
     });
@@ -96,6 +139,27 @@ describe('InvoicesItemsRepository', () => {
       expect(mockKnex.table).toHaveBeenCalledWith('invoices_items');
       expect(mockTable.where).toHaveBeenCalledWith('item_id', 'item-001');
     });
+
+    it('should return an empty array when no invoice items exist for the item', async () => {
+      mockTable.where.mockImplementation(() => []);
+
+      const result = await repository.findByItemId('non-existent');
+
+      expect(result).toEqual([]);
+      expect(mockKnex.table).toHaveBeenCalledWith('invoices_items');
+      expect(mockTable.where).toHaveBeenCalledWith('item_id', 'non-existent');
+    });
+
+    it('should propagate database errors', async () => {
+      const error = new Error('Database error');
+      mockTable.where.mockRejectedValue(error);
+
+      await expect(repository.findByItemId('item-001')).rejects.toThrow(
+        'Database error',
+      );
+      expect(mockKnex.table).toHaveBeenCalledWith('invoices_items');
+      expect(mockTable.where).toHaveBeenCalledWith('item_id', 'item-001');
+    });
   });
 
   describe('findOne', () => {
@@ -105,6 +169,35 @@ describe('InvoicesItemsRepository', () => {
       const result = await repository.findOne('invoice-001', 'item-001');
 
       expect(result).toEqual(mockInvoiceItem);
+      expect(mockKnex.table).toHaveBeenCalledWith('invoices_items');
+      expect(mockTable.where).toHaveBeenCalledWith({
+        invoice_id: 'invoice-001',
+        item_id: 'item-001',
+      });
+      expect(mockTable.first).toHaveBeenCalled();
+    });
+
+    it('should return null when invoice item is not found', async () => {
+      mockTable.first.mockResolvedValue(null);
+
+      const result = await repository.findOne('non-existent', 'non-existent');
+
+      expect(result).toBeNull();
+      expect(mockKnex.table).toHaveBeenCalledWith('invoices_items');
+      expect(mockTable.where).toHaveBeenCalledWith({
+        invoice_id: 'non-existent',
+        item_id: 'non-existent',
+      });
+      expect(mockTable.first).toHaveBeenCalled();
+    });
+
+    it('should propagate database errors', async () => {
+      const error = new Error('Database error');
+      mockTable.first.mockRejectedValue(error);
+
+      await expect(
+        repository.findOne('invoice-001', 'item-001'),
+      ).rejects.toThrow('Database error');
       expect(mockKnex.table).toHaveBeenCalledWith('invoices_items');
       expect(mockTable.where).toHaveBeenCalledWith({
         invoice_id: 'invoice-001',
@@ -129,6 +222,22 @@ describe('InvoicesItemsRepository', () => {
       expect(mockTable.insert).toHaveBeenCalledWith(invoiceItemToCreate);
       expect(mockTable.returning).toHaveBeenCalledWith('*');
     });
+
+    it('should propagate database errors', async () => {
+      const invoiceItemToCreate = {
+        invoice_id: 'invoice-003',
+        item_id: 'item-003',
+      };
+      const error = new Error('Database error');
+      mockTable.returning.mockRejectedValue(error);
+
+      await expect(repository.create(invoiceItemToCreate)).rejects.toThrow(
+        'Database error',
+      );
+      expect(mockKnex.table).toHaveBeenCalledWith('invoices_items');
+      expect(mockTable.insert).toHaveBeenCalledWith(invoiceItemToCreate);
+      expect(mockTable.returning).toHaveBeenCalledWith('*');
+    });
   });
 
   describe('remove', () => {
@@ -137,6 +246,34 @@ describe('InvoicesItemsRepository', () => {
 
       await repository.remove('invoice-001', 'item-001');
 
+      expect(mockKnex.table).toHaveBeenCalledWith('invoices_items');
+      expect(mockTable.where).toHaveBeenCalledWith({
+        invoice_id: 'invoice-001',
+        item_id: 'item-001',
+      });
+      expect(mockTable.delete).toHaveBeenCalled();
+    });
+
+    it('should handle case when no invoice item is removed', async () => {
+      mockTable.delete.mockResolvedValue(0);
+
+      await repository.remove('non-existent', 'non-existent');
+
+      expect(mockKnex.table).toHaveBeenCalledWith('invoices_items');
+      expect(mockTable.where).toHaveBeenCalledWith({
+        invoice_id: 'non-existent',
+        item_id: 'non-existent',
+      });
+      expect(mockTable.delete).toHaveBeenCalled();
+    });
+
+    it('should propagate database errors', async () => {
+      const error = new Error('Database error');
+      mockTable.delete.mockRejectedValue(error);
+
+      await expect(
+        repository.remove('invoice-001', 'item-001'),
+      ).rejects.toThrow('Database error');
       expect(mockKnex.table).toHaveBeenCalledWith('invoices_items');
       expect(mockTable.where).toHaveBeenCalledWith({
         invoice_id: 'invoice-001',
@@ -156,6 +293,31 @@ describe('InvoicesItemsRepository', () => {
       expect(mockTable.where).toHaveBeenCalledWith('invoice_id', 'invoice-001');
       expect(mockTable.delete).toHaveBeenCalled();
     });
+
+    it('should handle case when no invoice items are removed', async () => {
+      mockTable.delete.mockResolvedValue(0);
+
+      await repository.removeByInvoiceId('non-existent');
+
+      expect(mockKnex.table).toHaveBeenCalledWith('invoices_items');
+      expect(mockTable.where).toHaveBeenCalledWith(
+        'invoice_id',
+        'non-existent',
+      );
+      expect(mockTable.delete).toHaveBeenCalled();
+    });
+
+    it('should propagate database errors', async () => {
+      const error = new Error('Database error');
+      mockTable.delete.mockRejectedValue(error);
+
+      await expect(repository.removeByInvoiceId('invoice-001')).rejects.toThrow(
+        'Database error',
+      );
+      expect(mockKnex.table).toHaveBeenCalledWith('invoices_items');
+      expect(mockTable.where).toHaveBeenCalledWith('invoice_id', 'invoice-001');
+      expect(mockTable.delete).toHaveBeenCalled();
+    });
   });
 
   describe('removeByItemId', () => {
@@ -164,6 +326,28 @@ describe('InvoicesItemsRepository', () => {
 
       await repository.removeByItemId('item-001');
 
+      expect(mockKnex.table).toHaveBeenCalledWith('invoices_items');
+      expect(mockTable.where).toHaveBeenCalledWith('item_id', 'item-001');
+      expect(mockTable.delete).toHaveBeenCalled();
+    });
+
+    it('should handle case when no invoice items are removed', async () => {
+      mockTable.delete.mockResolvedValue(0);
+
+      await repository.removeByItemId('non-existent');
+
+      expect(mockKnex.table).toHaveBeenCalledWith('invoices_items');
+      expect(mockTable.where).toHaveBeenCalledWith('item_id', 'non-existent');
+      expect(mockTable.delete).toHaveBeenCalled();
+    });
+
+    it('should propagate database errors', async () => {
+      const error = new Error('Database error');
+      mockTable.delete.mockRejectedValue(error);
+
+      await expect(repository.removeByItemId('item-001')).rejects.toThrow(
+        'Database error',
+      );
       expect(mockKnex.table).toHaveBeenCalledWith('invoices_items');
       expect(mockTable.where).toHaveBeenCalledWith('item_id', 'item-001');
       expect(mockTable.delete).toHaveBeenCalled();

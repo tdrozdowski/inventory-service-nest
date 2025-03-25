@@ -9,9 +9,9 @@ export class ItemsRepository {
 
   async findAll(): Promise<Item[]> {
     const items = await this.knex.table('items').select('*');
-    return items.map(item => ({
+    return items.map((item) => ({
       ...item,
-      unit_price: Number(item.unit_price)
+      unit_price: Number(item.unit_price),
     }));
   }
 

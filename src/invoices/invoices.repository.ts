@@ -9,9 +9,9 @@ export class InvoicesRepository {
 
   async findAll(): Promise<Invoice[]> {
     const invoices = await this.knex.table('invoices').select('*');
-    return invoices.map(invoice => ({
+    return invoices.map((invoice) => ({
       ...invoice,
-      total: Number(invoice.total)
+      total: Number(invoice.total),
     }));
   }
 
@@ -24,7 +24,10 @@ export class InvoicesRepository {
   }
 
   async findByAltId(altId: string): Promise<Invoice> {
-    const invoice = await this.knex.table('invoices').where('alt_id', altId).first();
+    const invoice = await this.knex
+      .table('invoices')
+      .where('alt_id', altId)
+      .first();
     if (invoice) {
       invoice.total = Number(invoice.total);
     }
@@ -33,9 +36,9 @@ export class InvoicesRepository {
 
   async findByUserId(userId: string): Promise<Invoice[]> {
     const invoices = await this.knex.table('invoices').where('user_id', userId);
-    return invoices.map(invoice => ({
+    return invoices.map((invoice) => ({
       ...invoice,
-      total: Number(invoice.total)
+      total: Number(invoice.total),
     }));
   }
 

@@ -29,11 +29,15 @@ export class UpdateItemDto {
 }
 
 export class ItemDto {
-  @ApiPropertyOptional({ description: 'The unique identifier for the item' })
+  @ApiPropertyOptional({
+    description: 'The unique identifier for the item',
+    readOnly: true,
+  })
   id?: number;
 
   @ApiPropertyOptional({
     description: 'An alternative identifier for the item',
+    readOnly: true,
   })
   alt_id?: string;
 

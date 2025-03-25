@@ -38,7 +38,7 @@ Accept: application/json
 }
 
 ### Delete an item
-DELETE {{baseUrl}}/api/v1/items/1
+DELETE {{baseUrl}}/api/v1/items/80
 Accept: application/json
 
 ### Persons API Tests

@@ -991,11 +991,13 @@
         "properties": {
           "id": {
             "type": "number",
-            "description": "The unique identifier for the item"
+            "description": "The unique identifier for the item",
+            "readOnly": true
           },
           "alt_id": {
             "type": "string",
-            "description": "An alternative identifier for the item"
+            "description": "An alternative identifier for the item",
+            "readOnly": true
           },
           "name": {
             "type": "string",
@@ -1093,7 +1095,8 @@
           },
           "alt_id": {
             "type": "string",
-            "description": "An alternative identifier for the person"
+            "description": "An alternative identifier for the person",
+            "readOnly": true
           },
           "name": {
             "type": "string",
@@ -1177,7 +1180,8 @@
           },
           "alt_id": {
             "type": "string",
-            "description": "An alternative identifier for the invoice"
+            "description": "An alternative identifier for the invoice",
+            "readOnly": true
           },
           "total": {
             "type": "number",

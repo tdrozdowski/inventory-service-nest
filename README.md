@@ -39,6 +39,8 @@ $ npm run test:e2e
 $ npm run test:cov
 ```
 
+For detailed information on how to write unit tests for different components of a NestJS module in this project, see the [UNIT_TESTING.md](UNIT_TESTING.md) document.
+
 ## Integration Tests
 
 This project includes comprehensive integration tests that use HTTP client (supertest) to test the API endpoints. These tests verify that the entire request-response cycle works correctly, including controllers, services, and database operations.
@@ -340,4 +342,3 @@ If you encounter any issues with `act`:
 1. Make sure Docker is running
 2. Try running with increased verbosity: `act -v`
 3. Check the [act documentation](https://github.com/nektos/act#commands) for more options
-

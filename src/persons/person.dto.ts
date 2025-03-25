@@ -34,6 +34,7 @@ export class PersonDto {
 
   @ApiPropertyOptional({
     description: 'An alternative identifier for the person',
+    readOnly: true,
   })
   alt_id?: string;
 

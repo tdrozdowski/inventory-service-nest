@@ -47,6 +47,7 @@ export class InvoiceDto {
 
   @ApiPropertyOptional({
     description: 'An alternative identifier for the invoice',
+    readOnly: true,
   })
   alt_id?: string;
 
