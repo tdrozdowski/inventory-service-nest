@@ -1,0 +1,16 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+namespace: examples
+nameSuffix: -nest
+
+resources:
+  - ../../base
+  - sealedsecret.yaml
+
+patches:
+  - path: configmap.yaml
+
+labels:
+  - pairs:
+     environment: examples

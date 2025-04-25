@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: inventory-service-config
+data:
+  NODE_ENV: "production"
+  DATABASE_HOST: "lab1.local"
+  DATABASE_NAME: "inventory"
