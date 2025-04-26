@@ -3,10 +3,12 @@ import { INestApplication } from '@nestjs/common';
 import * as request from 'supertest';
 import { AppModule } from './../src/app.module';
 import { Item } from '../src/items/items.interface';
+import { getAuthToken } from './auth-helper';
 
 describe('ItemsController (e2e)', () => {
   let app: INestApplication;
-  let createdItemId: number;
+  let createdItemId: string;
+  let authToken: string;
 
   // Test item data
   const testItem: Omit<Item, 'id' | 'alt_id'> = {
@@ -28,6 +30,10 @@ describe('ItemsController (e2e)', () => {
 
     app = moduleFixture.createNestApplication();
     await app.init();
+
+    // Get authentication token
+    authToken = await getAuthToken(app);
+    console.log('Auth token obtained for tests');
   });
 
   afterAll(async () => {
@@ -37,6 +43,7 @@ describe('ItemsController (e2e)', () => {
   it('should create an item', async () => {
     const response = await request(app.getHttpServer())
       .post('/items')
+      .set('Authorization', `Bearer ${authToken}`)
       .send(testItem)
       .expect(201);
 
@@ -54,6 +61,7 @@ describe('ItemsController (e2e)', () => {
   it('should get all items', async () => {
     const response = await request(app.getHttpServer())
       .get('/items')
+      .set('Authorization', `Bearer ${authToken}`)
       .expect(200);
 
     expect(Array.isArray(response.body)).toBe(true);
@@ -64,6 +72,7 @@ describe('ItemsController (e2e)', () => {
     console.log('Getting item with ID:', createdItemId);
     const response = await request(app.getHttpServer())
       .get(`/items/${createdItemId}`)
+      .set('Authorization', `Bearer ${authToken}`)
       .expect(200);
 
     expect(response.body).toHaveProperty('id', createdItemId);
@@ -74,24 +83,29 @@ describe('ItemsController (e2e)', () => {
     console.log('Updating item with ID:', createdItemId);
     const response = await request(app.getHttpServer())
       .put(`/items/${createdItemId}`)
+      .set('Authorization', `Bearer ${authToken}`)
       .send(updatedItem)
       .expect(200);
 
     expect(response.body).toHaveProperty('id', createdItemId);
     expect(response.body.name).toBe(updatedItem.name);
     expect(response.body.description).toBe(updatedItem.description);
-    expect(parseFloat(response.body.unit_price)).toEqual(updatedItem.unit_price);
+    expect(parseFloat(response.body.unit_price)).toEqual(
+      updatedItem.unit_price,
+    );
   });
 
   it('should delete an item', () => {
     return request(app.getHttpServer())
       .delete(`/items/${createdItemId}`)
+      .set('Authorization', `Bearer ${authToken}`)
       .expect(200);
   });
 
   it('should return 404 for a deleted item', () => {
     return request(app.getHttpServer())
       .get(`/items/${createdItemId}`)
+      .set('Authorization', `Bearer ${authToken}`)
       .expect(404);
   });
 });

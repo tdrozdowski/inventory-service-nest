@@ -23,7 +23,7 @@ export async function up(knex) {
 
   // If the table already exists, return a resolved promise
   return Promise.resolve();
-};
+}
 
 /**
  * @param { import("knex").Knex } knex
@@ -31,4 +31,4 @@ export async function up(knex) {
  */
 export function down(knex) {
   return knex.schema.dropTable('invoices_items');
-};
+}

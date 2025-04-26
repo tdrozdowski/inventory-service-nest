@@ -6,15 +6,17 @@ import { InvoiceItem } from '../src/invoices-items/invoices-items.interface';
 import { Invoice } from '../src/invoices/invoices.interface';
 import { Item } from '../src/items/items.interface';
 import { Person } from '../src/persons/persons.interface';
+import { getAuthToken } from './auth-helper';
 
 describe('InvoicesItemsController (e2e)', () => {
   let app: INestApplication;
   let createdInvoiceAltId: string;
   let createdItemAltId: string;
-  let createdInvoiceId: number;
-  let createdItemId: number;
-  let createdPersonId: number;
+  let createdInvoiceId: string;
+  let createdItemId: string;
+  let createdPersonId: string;
   let personAltId: string;
+  let authToken: string;
 
   // Test person data
   const testPerson: Omit<Person, 'id' | 'alt_id'> = {
@@ -43,9 +45,14 @@ describe('InvoicesItemsController (e2e)', () => {
     app = moduleFixture.createNestApplication();
     await app.init();
 
+    // Get authentication token
+    authToken = await getAuthToken(app);
+    console.log('Auth token obtained for tests');
+
     // Create a test person first
     const personResponse = await request(app.getHttpServer())
       .post('/persons')
+      .set('Authorization', `Bearer ${authToken}`)
       .send(testPerson);
 
     createdPersonId = personResponse.body.id;
@@ -57,6 +64,7 @@ describe('InvoicesItemsController (e2e)', () => {
     // Create a test invoice and item to use in the tests
     const invoiceResponse = await request(app.getHttpServer())
       .post('/invoices')
+      .set('Authorization', `Bearer ${authToken}`)
       .send(testInvoice);
 
     createdInvoiceId = invoiceResponse.body.id; // Store numeric ID for deletion
@@ -64,6 +72,7 @@ describe('InvoicesItemsController (e2e)', () => {
 
     const itemResponse = await request(app.getHttpServer())
       .post('/items')
+      .set('Authorization', `Bearer ${authToken}`)
       .send(testItem);
 
     createdItemId = itemResponse.body.id; // Store numeric ID for deletion
@@ -77,6 +86,7 @@ describe('InvoicesItemsController (e2e)', () => {
       if (createdItemId) {
         await request(app.getHttpServer())
           .delete(`/items/${createdItemId}`)
+          .set('Authorization', `Bearer ${authToken}`)
           .expect(200);
       }
 
@@ -84,6 +94,7 @@ describe('InvoicesItemsController (e2e)', () => {
       if (createdInvoiceId) {
         await request(app.getHttpServer())
           .delete(`/invoices/${createdInvoiceId}`)
+          .set('Authorization', `Bearer ${authToken}`)
           .expect(200);
       }
 
@@ -91,6 +102,7 @@ describe('InvoicesItemsController (e2e)', () => {
       if (createdPersonId) {
         await request(app.getHttpServer())
           .delete(`/persons/${createdPersonId}`)
+          .set('Authorization', `Bearer ${authToken}`)
           .expect(200);
       }
     } catch (error) {
@@ -108,6 +120,7 @@ describe('InvoicesItemsController (e2e)', () => {
 
     return request(app.getHttpServer())
       .post('/invoices-items')
+      .set('Authorization', `Bearer ${authToken}`)
       .send(invoiceItem)
       .expect(201)
       .expect((res) => {
@@ -119,6 +132,7 @@ describe('InvoicesItemsController (e2e)', () => {
   it('should get all invoice-items', () => {
     return request(app.getHttpServer())
       .get('/invoices-items')
+      .set('Authorization', `Bearer ${authToken}`)
       .expect(200)
       .expect((res) => {
         expect(Array.isArray(res.body)).toBe(true);
@@ -129,6 +143,7 @@ describe('InvoicesItemsController (e2e)', () => {
   it('should get invoice-items by invoice ID', () => {
     return request(app.getHttpServer())
       .get(`/invoices-items/invoice/${createdInvoiceAltId}`)
+      .set('Authorization', `Bearer ${authToken}`)
       .expect(200)
       .expect((res) => {
         expect(Array.isArray(res.body)).toBe(true);
@@ -140,6 +155,7 @@ describe('InvoicesItemsController (e2e)', () => {
   it('should get invoice-items by item ID', () => {
     return request(app.getHttpServer())
       .get(`/invoices-items/item/${createdItemAltId}`)
+      .set('Authorization', `Bearer ${authToken}`)
       .expect(200)
       .expect((res) => {
         expect(Array.isArray(res.body)).toBe(true);
@@ -151,6 +167,7 @@ describe('InvoicesItemsController (e2e)', () => {
   it('should get a specific invoice-item by invoice ID and item ID', () => {
     return request(app.getHttpServer())
       .get(`/invoices-items/${createdInvoiceAltId}/${createdItemAltId}`)
+      .set('Authorization', `Bearer ${authToken}`)
       .expect(200)
       .expect((res) => {
         expect(res.body.invoice_id).toBe(createdInvoiceAltId);
@@ -161,12 +178,14 @@ describe('InvoicesItemsController (e2e)', () => {
   it('should delete a specific invoice-item', () => {
     return request(app.getHttpServer())
       .delete(`/invoices-items/${createdInvoiceAltId}/${createdItemAltId}`)
+      .set('Authorization', `Bearer ${authToken}`)
       .expect(200);
   });
 
   it('should return 404 for a deleted invoice-item', () => {
     return request(app.getHttpServer())
       .get(`/invoices-items/${createdInvoiceAltId}/${createdItemAltId}`)
+      .set('Authorization', `Bearer ${authToken}`)
       .expect(404);
   });
 
@@ -174,6 +193,7 @@ describe('InvoicesItemsController (e2e)', () => {
     // Create a second test item
     const secondItemResponse = await request(app.getHttpServer())
       .post('/items')
+      .set('Authorization', `Bearer ${authToken}`)
       .send({
         name: 'Second Test Item',
         description: 'This is another test item',
@@ -186,6 +206,7 @@ describe('InvoicesItemsController (e2e)', () => {
     // Create two invoice-items
     await request(app.getHttpServer())
       .post('/invoices-items')
+      .set('Authorization', `Bearer ${authToken}`)
       .send({
         invoice_id: createdInvoiceAltId,
         item_id: createdItemAltId,
@@ -194,6 +215,7 @@ describe('InvoicesItemsController (e2e)', () => {
 
     await request(app.getHttpServer())
       .post('/invoices-items')
+      .set('Authorization', `Bearer ${authToken}`)
       .send({
         invoice_id: createdInvoiceAltId,
         item_id: secondItemAltId,
@@ -203,6 +225,7 @@ describe('InvoicesItemsController (e2e)', () => {
     // Verify both exist
     const response = await request(app.getHttpServer())
       .get(`/invoices-items/invoice/${createdInvoiceAltId}`)
+      .set('Authorization', `Bearer ${authToken}`)
       .expect(200);
 
     expect(response.body.length).toBe(2);
@@ -210,17 +233,21 @@ describe('InvoicesItemsController (e2e)', () => {
     // Delete all invoice-items for the invoice
     await request(app.getHttpServer())
       .delete(`/invoices-items/invoice/${createdInvoiceAltId}`)
+      .set('Authorization', `Bearer ${authToken}`)
       .expect(200);
 
     // Verify they're gone
     await request(app.getHttpServer())
       .get(`/invoices-items/invoice/${createdInvoiceAltId}`)
+      .set('Authorization', `Bearer ${authToken}`)
       .expect(200)
       .expect((res) => {
         expect(res.body.length).toBe(0);
       });
 
     // Clean up the second test item using its numeric ID
-    await request(app.getHttpServer()).delete(`/items/${secondItemId}`);
+    await request(app.getHttpServer())
+      .delete(`/items/${secondItemId}`)
+      .set('Authorization', `Bearer ${authToken}`);
   });
 });

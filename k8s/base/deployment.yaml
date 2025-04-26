@@ -1,0 +1,47 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: inventory-service-nest
+  labels:
+    app: inventory-service-nest
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: inventory-service-nest
+  template:
+    metadata:
+      labels:
+        app: inventory-service-nest
+    spec:
+      containers:
+      - name: inventory-service-nest
+        image: ghcr.io/tdrozdowski/inventory-service-nest:0.1.0
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 3000
+          name: http
+        envFrom:
+        - configMapRef:
+            name: inventory-service-config-nest
+        - secretRef:
+            name: inventory-service-secrets-nest
+        resources:
+          limits:
+            cpu: "500m"
+            memory: "512Mi"
+          requests:
+            cpu: "100m"
+            memory: "256Mi"
+#        readinessProbe:
+#          httpGet:
+#            path: /
+#            port: 3000
+#          initialDelaySeconds: 10
+#          periodSeconds: 5
+#        livenessProbe:
+#          httpGet:
+#            path: /
+#            port: 3000
+#          initialDelaySeconds: 20
+#          periodSeconds: 15

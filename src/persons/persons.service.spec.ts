@@ -27,7 +27,7 @@ describe('PersonsService', () => {
   // Mock data
   const mockPersons: Person[] = [
     {
-      id: 1,
+      id: '1',
       alt_id: 'person-001',
       name: 'Test Person 1',
       email: 'test1@example.com',
@@ -37,7 +37,7 @@ describe('PersonsService', () => {
       last_changed_by: 'system',
     },
     {
-      id: 2,
+      id: '2',
       alt_id: 'person-002',
       name: 'Test Person 2',
       email: 'test2@example.com',
@@ -108,27 +108,27 @@ describe('PersonsService', () => {
     it('should return a single person by id', async () => {
       (repository.findOne as jest.Mock).mockResolvedValue(mockPerson);
 
-      const result = await service.findOne(1);
+      const result = await service.findOne('1');
 
       expect(result).toEqual(mockPerson);
-      expect(repository.findOne).toHaveBeenCalledWith(1);
+      expect(repository.findOne).toHaveBeenCalledWith('1');
     });
 
     it('should return null when person is not found', async () => {
       (repository.findOne as jest.Mock).mockResolvedValue(null);
 
-      const result = await service.findOne(999);
+      const result = await service.findOne('999');
 
       expect(result).toBeNull();
-      expect(repository.findOne).toHaveBeenCalledWith(999);
+      expect(repository.findOne).toHaveBeenCalledWith('999');
     });
 
     it('should propagate errors from the repository', async () => {
       const error = new Error('Database error');
       (repository.findOne as jest.Mock).mockRejectedValue(error);
 
-      await expect(service.findOne(1)).rejects.toThrow('Database error');
-      expect(repository.findOne).toHaveBeenCalledWith(1);
+      await expect(service.findOne('1')).rejects.toThrow('Database error');
+      expect(repository.findOne).toHaveBeenCalledWith('1');
     });
   });
 
@@ -178,7 +178,7 @@ describe('PersonsService', () => {
     it('should create and return a new person', async () => {
       const createdPerson = {
         ...mockPersonToCreate,
-        id: 3,
+        id: '3',
         alt_id: 'person-003',
       };
       (repository.create as jest.Mock).mockResolvedValue(createdPerson);
@@ -206,20 +206,20 @@ describe('PersonsService', () => {
       const updatedPerson = { ...mockPerson, name: 'Updated Person' };
       (repository.update as jest.Mock).mockResolvedValue(updatedPerson);
 
-      const result = await service.update(1, personToUpdate);
+      const result = await service.update('1', personToUpdate);
 
       expect(result).toEqual(updatedPerson);
-      expect(repository.update).toHaveBeenCalledWith(1, personToUpdate);
+      expect(repository.update).toHaveBeenCalledWith('1', personToUpdate);
     });
 
     it('should return null when trying to update a non-existent person', async () => {
       const personToUpdate = { name: 'Updated Person' };
       (repository.update as jest.Mock).mockResolvedValue(null);
 
-      const result = await service.update(999, personToUpdate);
+      const result = await service.update('999', personToUpdate);
 
       expect(result).toBeNull();
-      expect(repository.update).toHaveBeenCalledWith(999, personToUpdate);
+      expect(repository.update).toHaveBeenCalledWith('999', personToUpdate);
     });
 
     it('should handle errors during update', async () => {
@@ -227,10 +227,10 @@ describe('PersonsService', () => {
       const error = new Error('Update error');
       (repository.update as jest.Mock).mockRejectedValue(error);
 
-      await expect(service.update(1, personToUpdate)).rejects.toThrow(
+      await expect(service.update('1', personToUpdate)).rejects.toThrow(
         'Update error',
       );
-      expect(repository.update).toHaveBeenCalledWith(1, personToUpdate);
+      expect(repository.update).toHaveBeenCalledWith('1', personToUpdate);
     });
   });
 
@@ -238,17 +238,17 @@ describe('PersonsService', () => {
     it('should remove a person', async () => {
       (repository.remove as jest.Mock).mockResolvedValue(undefined);
 
-      await service.remove(1);
+      await service.remove('1');
 
-      expect(repository.remove).toHaveBeenCalledWith(1);
+      expect(repository.remove).toHaveBeenCalledWith('1');
     });
 
     it('should handle errors during removal', async () => {
       const error = new Error('Removal error');
       (repository.remove as jest.Mock).mockRejectedValue(error);
 
-      await expect(service.remove(1)).rejects.toThrow('Removal error');
-      expect(repository.remove).toHaveBeenCalledWith(1);
+      await expect(service.remove('1')).rejects.toThrow('Removal error');
+      expect(repository.remove).toHaveBeenCalledWith('1');
     });
   });
 });

@@ -10,7 +10,10 @@ export async function up(knex) {
   if (!exists) {
     return knex.schema.createTable('invoices', function (table) {
       table.increments('id').primary();
-      table.uuid('alt_id').notNullable().defaultTo(knex.raw('gen_random_uuid()'));
+      table
+        .uuid('alt_id')
+        .notNullable()
+        .defaultTo(knex.raw('gen_random_uuid()'));
       table.decimal('total', 15, 2).notNullable();
       table.boolean('paid').notNullable().defaultTo(false);
       table.text('created_by').notNullable();
@@ -35,7 +38,7 @@ export async function up(knex) {
 
   // If the table already exists, return a resolved promise
   return Promise.resolve();
-};
+}
 
 /**
  * @param { import("knex").Knex } knex
@@ -43,4 +46,4 @@ export async function up(knex) {
  */
 export function down(knex) {
   return knex.schema.dropTable('invoices');
-};
+}

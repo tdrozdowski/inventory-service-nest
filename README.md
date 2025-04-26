@@ -1,35 +1,35 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
-</p>
+# Inventory Service NestJS
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+![Node.js Version](https://img.shields.io/badge/node-%3E%3D22.0.0-brightgreen)
+![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/username/inventory-service-nest/unit-tests.yml?label=tests)
+![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/username/inventory-service-nest/e2e-tests.yml?label=e2e)
+![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/username/inventory-service-nest/docker-publish.yml?label=docker)
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
-
-## Description
-
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+A RESTful API service for inventory management built with NestJS, Knex.js, and PostgreSQL.
 
 ## Project setup
 
 ```bash
 $ npm install
+```
+
+## API Documentation
+
+This project includes OpenAPI documentation that can be accessed through the following endpoints:
+
+- `/docs` - Swagger UI documentation
+- `/docs-redoc` - ReDoc UI documentation (more user-friendly)
+
+The OpenAPI specification is also available as a JSON file at `/docs-json` and is saved to the project root as `openapi-spec.json`.
+
+To generate or update the OpenAPI specification:
+
+```bash
+# Generate OpenAPI spec (after building the project)
+$ npm run generate-openapi
+
+# The build process automatically generates the OpenAPI spec
+$ npm run build
 ```
 
 ## Compile and run the project
@@ -57,6 +57,8 @@ $ npm run test:e2e
 # test coverage
 $ npm run test:cov
 ```
+
+For detailed information on how to write unit tests for different components of a NestJS module in this project, see the [UNIT_TESTING.md](UNIT_TESTING.md) document.
 
 ## Integration Tests
 
@@ -252,10 +254,56 @@ When using Docker Compose, the application will automatically:
 
 ## GitHub Actions
 
-This project uses GitHub Actions for continuous integration and testing. There are two main workflows:
+This project uses GitHub Actions for continuous integration, testing, and deployment. There are three main workflows:
 
 1. **Unit Tests Workflow** (`.github/workflows/unit-tests.yml`): Runs linting, unit tests, and test coverage.
 2. **E2E Tests Workflow** (`.github/workflows/e2e-tests.yml`): Runs end-to-end tests with a PostgreSQL database.
+3. **Docker Publish Workflow** (`.github/workflows/docker-publish.yml`): Builds and publishes Docker images to GitHub Container Registry (GHCR) using semantic versioning.
+
+### Docker Image Publishing
+
+The Docker Publish workflow automatically builds and publishes Docker images to GitHub Container Registry (GHCR) when:
+
+- A new release is published
+- A new tag with format `v*.*.*` is pushed
+- Code is pushed to the main/master branch
+
+#### Semantic Versioning
+
+The workflow uses semantic versioning (SEMVER) for Docker image tags:
+
+- When a release or tag with format `v1.2.3` is created:
+
+  - `ghcr.io/username/inventory-service-nest:1.2.3` (full version)
+  - `ghcr.io/username/inventory-service-nest:1.2` (major.minor)
+  - `ghcr.io/username/inventory-service-nest:1` (major)
+
+- When code is pushed to main/master:
+  - `ghcr.io/username/inventory-service-nest:main` (branch name)
+  - `ghcr.io/username/inventory-service-nest:sha-abc123` (commit SHA)
+
+#### Using the Published Docker Images
+
+To pull and run the published Docker image:
+
+```bash
+# Pull the latest version
+$ docker pull ghcr.io/username/inventory-service-nest:latest
+
+# Pull a specific version
+$ docker pull ghcr.io/username/inventory-service-nest:1.2.3
+
+# Run the container
+$ docker run -p 3000:3000 \
+  -e DATABASE_HOST=your-db-host \
+  -e DATABASE_PORT=5432 \
+  -e DATABASE_USER=postgres \
+  -e DATABASE_PASSWORD=your-password \
+  -e DATABASE_NAME=inventory \
+  ghcr.io/username/inventory-service-nest:1.2.3
+```
+
+Replace `username` with your GitHub username or organization name.
 
 ### Testing GitHub Actions Locally
 
@@ -266,16 +314,19 @@ You can test GitHub Actions locally using [act](https://github.com/nektos/act), 
 First, install `act` following the instructions on the [official GitHub repository](https://github.com/nektos/act#installation).
 
 For macOS:
+
 ```bash
 brew install act
 ```
 
 For Linux:
+
 ```bash
 curl -s https://raw.githubusercontent.com/nektos/act/master/install.sh | sudo bash
 ```
 
 For Windows:
+
 ```bash
 choco install act-cli
 ```
@@ -290,6 +341,9 @@ $ npm run test:github-actions:unit
 
 # Test the e2e tests workflow
 $ npm run test:github-actions:e2e
+
+# Test the Docker publish workflow
+$ npm run test:github-actions:docker
 ```
 
 These commands will run the respective GitHub Actions workflows locally using Docker, simulating the same environment as GitHub's runners.
@@ -307,29 +361,3 @@ If you encounter any issues with `act`:
 1. Make sure Docker is running
 2. Try running with increased verbosity: `act -v`
 3. Check the [act documentation](https://github.com/nektos/act#commands) for more options
-
-## Resources
-
-Check out a few resources that may come in handy when working with NestJS:
-
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
-
-## Support
-
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
-
-## Stay in touch
-
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
-
-## License
-
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).

@@ -3,10 +3,12 @@ import { INestApplication } from '@nestjs/common';
 import * as request from 'supertest';
 import { AppModule } from './../src/app.module';
 import { Person } from '../src/persons/persons.interface';
+import { getAuthToken } from './auth-helper';
 
 describe('PersonsController (e2e)', () => {
   let app: INestApplication;
-  let createdPersonId: number;
+  let createdPersonId: string;
+  let authToken: string;
 
   // Test person data
   const testPerson: Omit<Person, 'id' | 'alt_id'> = {
@@ -26,6 +28,10 @@ describe('PersonsController (e2e)', () => {
 
     app = moduleFixture.createNestApplication();
     await app.init();
+
+    // Get authentication token
+    authToken = await getAuthToken(app);
+    console.log('Auth token obtained for tests');
   });
 
   afterAll(async () => {
@@ -35,6 +41,7 @@ describe('PersonsController (e2e)', () => {
   it('should create a person', () => {
     return request(app.getHttpServer())
       .post('/persons')
+      .set('Authorization', `Bearer ${authToken}`)
       .send(testPerson)
       .expect(201)
       .expect((res) => {
@@ -51,6 +58,7 @@ describe('PersonsController (e2e)', () => {
   it('should get all persons', () => {
     return request(app.getHttpServer())
       .get('/persons')
+      .set('Authorization', `Bearer ${authToken}`)
       .expect(200)
       .expect((res) => {
         expect(Array.isArray(res.body)).toBe(true);
@@ -61,6 +69,7 @@ describe('PersonsController (e2e)', () => {
   it('should get a person by ID', () => {
     return request(app.getHttpServer())
       .get(`/persons/${createdPersonId}`)
+      .set('Authorization', `Bearer ${authToken}`)
       .expect(200)
       .expect((res) => {
         expect(res.body).toHaveProperty('id', createdPersonId);
@@ -72,6 +81,7 @@ describe('PersonsController (e2e)', () => {
   it('should get a person by email', () => {
     return request(app.getHttpServer())
       .get(`/persons/email/${testPerson.email}`)
+      .set('Authorization', `Bearer ${authToken}`)
       .expect(200)
       .expect((res) => {
         expect(res.body).toHaveProperty('id', createdPersonId);
@@ -83,6 +93,7 @@ describe('PersonsController (e2e)', () => {
   it('should update a person', () => {
     return request(app.getHttpServer())
       .put(`/persons/${createdPersonId}`)
+      .set('Authorization', `Bearer ${authToken}`)
       .send(updatedPerson)
       .expect(200)
       .expect((res) => {
@@ -95,6 +106,7 @@ describe('PersonsController (e2e)', () => {
   it('should get a person by updated email', () => {
     return request(app.getHttpServer())
       .get(`/persons/email/${updatedPerson.email}`)
+      .set('Authorization', `Bearer ${authToken}`)
       .expect(200)
       .expect((res) => {
         expect(res.body).toHaveProperty('id', createdPersonId);
@@ -106,12 +118,14 @@ describe('PersonsController (e2e)', () => {
   it('should delete a person', () => {
     return request(app.getHttpServer())
       .delete(`/persons/${createdPersonId}`)
+      .set('Authorization', `Bearer ${authToken}`)
       .expect(200);
   });
 
   it('should return 404 for a deleted person', () => {
     return request(app.getHttpServer())
       .get(`/persons/${createdPersonId}`)
+      .set('Authorization', `Bearer ${authToken}`)
       .expect(404);
   });
 });

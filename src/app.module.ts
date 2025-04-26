@@ -11,13 +11,17 @@ import { InvoicesModule } from './invoices/invoices.module';
 import { InvoicesController } from './invoices/invoices.controller';
 import { InvoicesItemsModule } from './invoices-items/invoices-items.module';
 import { InvoicesItemsController } from './invoices-items/invoices-items.controller';
+import { AuthModule } from './auth/auth.module';
+import { APP_GUARD } from '@nestjs/core';
+import { JwtAuthGuard } from './auth/jwt-auth.guard';
 import databaseConfig from './config/database.config';
+import authConfig from './config/auth.config';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
-      load: [databaseConfig],
+      load: [databaseConfig, authConfig],
     }),
     KnexModule.forRootAsync({
       imports: [ConfigModule],
@@ -30,6 +34,7 @@ import databaseConfig from './config/database.config';
     PersonsModule,
     InvoicesModule,
     InvoicesItemsModule,
+    AuthModule,
   ],
   controllers: [
     AppController,
@@ -38,6 +43,12 @@ import databaseConfig from './config/database.config';
     InvoicesController,
     InvoicesItemsController,
   ],
-  providers: [AppService],
+  providers: [
+    AppService,
+    {
+      provide: APP_GUARD,
+      useClass: JwtAuthGuard,
+    },
+  ],
 })
 export class AppModule {}

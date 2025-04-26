@@ -10,7 +10,7 @@ export class PersonsService {
     return this.personsRepository.findAll();
   }
 
-  async findOne(id: number): Promise<Person> {
+  async findOne(id: string): Promise<Person> {
     return this.personsRepository.findOne(id);
   }
 
@@ -26,11 +26,11 @@ export class PersonsService {
     return this.personsRepository.create(person);
   }
 
-  async update(id: number, person: Partial<Person>): Promise<Person> {
+  async update(id: string, person: Partial<Person>): Promise<Person> {
     return this.personsRepository.update(id, person);
   }
 
-  async remove(id: number): Promise<void> {
+  async remove(id: string): Promise<void> {
     await this.personsRepository.remove(id);
   }
 }

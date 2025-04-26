@@ -12,7 +12,7 @@ export async function up(knex) {
 
     if (!hasLastUpdate) {
       // Add the last_update column to the existing table
-      return knex.schema.alterTable('items', function(table) {
+      return knex.schema.alterTable('items', function (table) {
         table
           .timestamp('last_update', { useTz: true })
           .notNullable()
@@ -23,19 +23,19 @@ export async function up(knex) {
 
   // If the table doesn't exist or the column already exists, return a resolved promise
   return Promise.resolve();
-};
+}
 
 /**
  * @param { import("knex").Knex } knex
  * @returns { Promise<void> }
  */
 export function down(knex) {
-  return knex.schema.hasTable('items').then(exists => {
+  return knex.schema.hasTable('items').then((exists) => {
     if (exists) {
-      return knex.schema.alterTable('items', function(table) {
+      return knex.schema.alterTable('items', function (table) {
         table.dropColumn('last_update');
       });
     }
     return Promise.resolve();
   });
-};
+}

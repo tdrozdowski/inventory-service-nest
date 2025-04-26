@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites name="jest tests" tests="30" failures="0" errors="0" time="3.168">
+  <testsuite name="test/app.e2e-spec.ts" errors="0" failures="0" skipped="0" timestamp="2025-03-24T05:44:29" time="2.919" tests="1">
+    <testcase classname="test/app.e2e-spec.ts" name="AppController (e2e)-/ (GET)" time="0.152">
+    </testcase>
+  </testsuite>
+  <testsuite name="test/items.e2e-spec.ts" errors="0" failures="0" skipped="0" timestamp="2025-03-24T05:44:29" time="2.955" tests="6">
+    <testcase classname="test/items.e2e-spec.ts" name="ItemsController (e2e)-should create an item" time="0.118">
+    </testcase>
+    <testcase classname="test/items.e2e-spec.ts" name="ItemsController (e2e)-should get all items" time="0.006">
+    </testcase>
+    <testcase classname="test/items.e2e-spec.ts" name="ItemsController (e2e)-should get an item by ID" time="0.008">
+    </testcase>
+    <testcase classname="test/items.e2e-spec.ts" name="ItemsController (e2e)-should update an item" time="0.007">
+    </testcase>
+    <testcase classname="test/items.e2e-spec.ts" name="ItemsController (e2e)-should delete an item" time="0.005">
+    </testcase>
+    <testcase classname="test/items.e2e-spec.ts" name="ItemsController (e2e)-should return 404 for a deleted item" time="0.005">
+    </testcase>
+  </testsuite>
+  <testsuite name="test/invoices.e2e-spec.ts" errors="0" failures="0" skipped="0" timestamp="2025-03-24T05:44:29" time="2.96" tests="7">
+    <testcase classname="test/invoices.e2e-spec.ts" name="InvoicesController (e2e)-should create an invoice" time="0.018">
+    </testcase>
+    <testcase classname="test/invoices.e2e-spec.ts" name="InvoicesController (e2e)-should get all invoices" time="0.006">
+    </testcase>
+    <testcase classname="test/invoices.e2e-spec.ts" name="InvoicesController (e2e)-should get an invoice by ID" time="0.005">
+    </testcase>
+    <testcase classname="test/invoices.e2e-spec.ts" name="InvoicesController (e2e)-should get invoices by user ID" time="0.007">
+    </testcase>
+    <testcase classname="test/invoices.e2e-spec.ts" name="InvoicesController (e2e)-should update an invoice" time="0.011">
+    </testcase>
+    <testcase classname="test/invoices.e2e-spec.ts" name="InvoicesController (e2e)-should delete an invoice" time="0.004">
+    </testcase>
+    <testcase classname="test/invoices.e2e-spec.ts" name="InvoicesController (e2e)-should return 404 for a deleted invoice" time="0.005">
+    </testcase>
+  </testsuite>
+  <testsuite name="test/persons.e2e-spec.ts" errors="0" failures="0" skipped="0" timestamp="2025-03-24T05:44:29" time="2.965" tests="8">
+    <testcase classname="test/persons.e2e-spec.ts" name="PersonsController (e2e)-should create a person" time="0.069">
+    </testcase>
+    <testcase classname="test/persons.e2e-spec.ts" name="PersonsController (e2e)-should get all persons" time="0.012">
+    </testcase>
+    <testcase classname="test/persons.e2e-spec.ts" name="PersonsController (e2e)-should get a person by ID" time="0.007">
+    </testcase>
+    <testcase classname="test/persons.e2e-spec.ts" name="PersonsController (e2e)-should get a person by email" time="0.004">
+    </testcase>
+    <testcase classname="test/persons.e2e-spec.ts" name="PersonsController (e2e)-should update a person" time="0.007">
+    </testcase>
+    <testcase classname="test/persons.e2e-spec.ts" name="PersonsController (e2e)-should get a person by updated email" time="0.004">
+    </testcase>
+    <testcase classname="test/persons.e2e-spec.ts" name="PersonsController (e2e)-should delete a person" time="0.004">
+    </testcase>
+    <testcase classname="test/persons.e2e-spec.ts" name="PersonsController (e2e)-should return 404 for a deleted person" time="0.006">
+    </testcase>
+  </testsuite>
+  <testsuite name="test/invoices-items.e2e-spec.ts" errors="0" failures="0" skipped="0" timestamp="2025-03-24T05:44:29" time="2.992" tests="8">
+    <testcase classname="test/invoices-items.e2e-spec.ts" name="InvoicesItemsController (e2e)-should create an invoice-item relationship" time="0.012">
+    </testcase>
+    <testcase classname="test/invoices-items.e2e-spec.ts" name="InvoicesItemsController (e2e)-should get all invoice-items" time="0.006">
+    </testcase>
+    <testcase classname="test/invoices-items.e2e-spec.ts" name="InvoicesItemsController (e2e)-should get invoice-items by invoice ID" time="0.006">
+    </testcase>
+    <testcase classname="test/invoices-items.e2e-spec.ts" name="InvoicesItemsController (e2e)-should get invoice-items by item ID" time="0.006">
+    </testcase>
+    <testcase classname="test/invoices-items.e2e-spec.ts" name="InvoicesItemsController (e2e)-should get a specific invoice-item by invoice ID and item ID" time="0.006">
+    </testcase>
+    <testcase classname="test/invoices-items.e2e-spec.ts" name="InvoicesItemsController (e2e)-should delete a specific invoice-item" time="0.006">
+    </testcase>
+    <testcase classname="test/invoices-items.e2e-spec.ts" name="InvoicesItemsController (e2e)-should return 404 for a deleted invoice-item" time="0.005">
+    </testcase>
+    <testcase classname="test/invoices-items.e2e-spec.ts" name="InvoicesItemsController (e2e)-should create multiple invoice-items and delete by invoice ID" time="0.031">
+    </testcase>
+  </testsuite>
+</testsuites>

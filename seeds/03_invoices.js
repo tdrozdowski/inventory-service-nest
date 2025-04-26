@@ -37,4 +37,4 @@ export async function seed(knex) {
       created_by: 'system',
     },
   ]);
-};
+}

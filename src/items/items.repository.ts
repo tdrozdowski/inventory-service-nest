@@ -8,15 +8,27 @@ export class ItemsRepository {
   constructor(@InjectConnection() private readonly knex: Knex) {}
 
   async findAll(): Promise<Item[]> {
-    return this.knex.table('items').select('*');
+    const items = await this.knex.table('items').select('*');
+    return items.map((item) => ({
+      ...item,
+      unit_price: Number(item.unit_price),
+    }));
   }
 
-  async findOne(id: number): Promise<Item> {
-    return this.knex.table('items').where('id', id).first();
+  async findOne(id: string): Promise<Item> {
+    const item = await this.knex.table('items').where('id', id).first();
+    if (item) {
+      item.unit_price = Number(item.unit_price);
+    }
+    return item;
   }
 
   async findByAltId(altId: string): Promise<Item> {
-    return this.knex.table('items').where('alt_id', altId).first();
+    const item = await this.knex.table('items').where('alt_id', altId).first();
+    if (item) {
+      item.unit_price = Number(item.unit_price);
+    }
+    return item;
   }
 
   async create(item: Omit<Item, 'id' | 'alt_id'>): Promise<Item> {
@@ -28,10 +40,15 @@ export class ItemsRepository {
       .table('items')
       .insert(itemToCreate)
       .returning('*');
+
+    if (result) {
+      result.unit_price = Number(result.unit_price);
+    }
+
     return result;
   }
 
-  async update(id: number, item: Partial<Item>): Promise<Item> {
+  async update(id: string, item: Partial<Item>): Promise<Item> {
     const itemToUpdate = {
       ...item,
       last_update: new Date(),
@@ -42,10 +59,15 @@ export class ItemsRepository {
       .where('id', id)
       .update(itemToUpdate)
       .returning('*');
+
+    if (result) {
+      result.unit_price = Number(result.unit_price);
+    }
+
     return result;
   }
 
-  async remove(id: number): Promise<void> {
+  async remove(id: string): Promise<void> {
     await this.knex.table('items').where('id', id).delete();
   }
 }

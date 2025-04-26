@@ -81,7 +81,11 @@ export async function createTestInvoice(
     user_id: personAltId,
   };
 
-  const finalInvoiceData = { ...defaultInvoiceData, ...invoiceData, user_id: personAltId };
+  const finalInvoiceData = {
+    ...defaultInvoiceData,
+    ...invoiceData,
+    user_id: personAltId,
+  };
 
   const response = await request(app.getHttpServer())
     .post('/invoices')
