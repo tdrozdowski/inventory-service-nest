@@ -1,22 +1,29 @@
-### Environment Variables
-@baseUrl = http://localhost:3000
+### Authorization API Tests
+
+# Get JWT token with Basic Auth
+# @name authorize
+POST {{baseUrl}}/api/v1/authorize
+Authorization: Basic Y2xpZW50X2lkOnNlY3JldA==
+Content-Type: application/json
+Accept: application/json
+
+> {%
+    if (response.body && response.body.token) {
+        client.global.set("token", response.body.token);
+    }
+%}
 
 ### Items API Tests
-
 # Get all items
 GET {{baseUrl}}/api/v1/items
+Authorization: Bearer {{token}}
 Accept: application/json
 
-### Get item by ID
-GET {{baseUrl}}/api/v1/items/44
-Accept: application/json
+### Create Item
 
-### Get item by alternative ID
-GET {{baseUrl}}/api/v1/items/alt/some-alt-id
-Accept: application/json
-
-### Create a new item
+# @name createItem
 POST {{baseUrl}}/api/v1/items
+Authorization: Bearer {{token}}
 Content-Type: application/json
 Accept: application/json
 
@@ -26,8 +33,26 @@ Accept: application/json
   "unit_price": 19.99
 }
 
+> {%
+    if (response.body && response.body.id) {
+        client.global.set("itemId", response.body.alt_id);
+        client.global.set("altItemId", response.body.id);
+    }
+%}
+
+### Get item by ID
+GET {{baseUrl}}/api/v1/items/{{itemId}}
+Authorization: Bearer {{token}}
+Accept: application/json
+
+### Get item by alternative ID
+GET {{baseUrl}}/api/v1/items/alt/{{altItemId}}
+Authorization: Bearer {{token}}
+Accept: application/json
+
 ### Update an item
-PUT {{baseUrl}}/api/v1/items/44
+PUT {{baseUrl}}/api/v1/items/{{itemId}}
+Authorization: Bearer {{token}}
 Content-Type: application/json
 Accept: application/json
 
@@ -37,83 +62,116 @@ Accept: application/json
   "unit_price": 29.99
 }
 
-### Delete an item
-DELETE {{baseUrl}}/api/v1/items/80
-Accept: application/json
+
 
 ### Persons API Tests
 
 # Get all persons
 GET {{baseUrl}}/api/v1/persons
+Authorization: Bearer {{token}}
 Accept: application/json
 
-### Get person by ID
-GET {{baseUrl}}/api/v1/persons/1
-Accept: application/json
-
-### Get person by alternative ID
-GET {{baseUrl}}/api/v1/persons/alt/some-alt-id
-Accept: application/json
-
-### Get person by email
-GET {{baseUrl}}/api/v1/persons/email/test@example.com
-Accept: application/json
-
-### Create a new person
+### Create a Person
+< {%
+    const timestamp = new Date().getTime();
+    const random = Math.floor(Math.random() * 10000);
+    client.global.set("userEmail", `test+${timestamp}${random}@example.com`);
+%}
 POST {{baseUrl}}/api/v1/persons
+Authorization: Bearer {{token}}
 Content-Type: application/json
 Accept: application/json
 
 {
   "name": "Test Person",
-  "email": "test@example.com"
+  "email": "{{userEmail}}"
 }
 
+> {%
+  if (response.body && response.body.id) {
+    client.global.set("personId", response.body.id);
+    client.global.set("altPersonId", response.body.alt_id);
+  }
+%}
+
+### Get person by ID
+GET {{baseUrl}}/api/v1/persons/{{personId}}
+Authorization: Bearer {{token}}
+Accept: application/json
+
+### Get person by alternative ID
+GET {{baseUrl}}/api/v1/persons/alt/{{altPersonId}}
+Authorization: Bearer {{token}}
+Accept: application/json
+
+### Get person by email
+GET {{baseUrl}}/api/v1/persons/email/test@example.com
+Authorization: Bearer {{token}}
+Accept: application/json
+
 ### Update a person
-PUT {{baseUrl}}/api/v1/persons/1
+< {%
+  const timestamp = new Date().getTime();
+  const random = Math.floor(Math.random() * 10000);
+  client.global.set("updatedEmail", `test+${timestamp}${random}@example.com`);
+%}
+PUT {{baseUrl}}/api/v1/persons/{{personId}}
+Authorization: Bearer {{token}}
 Content-Type: application/json
 Accept: application/json
 
 {
   "name": "Updated Test Person",
-  "email": "updated@example.com"
+  "email": "{{updatedEmail}}"
 }
 
-### Delete a person
-DELETE {{baseUrl}}/api/v1/persons/1
-Accept: application/json
+
 
 ### Invoices API Tests
 
 # Get all invoices
 GET {{baseUrl}}/api/v1/invoices
+Authorization: Bearer {{token}}
 Accept: application/json
 
-### Get invoice by ID
-GET {{baseUrl}}/api/v1/invoices/1
-Accept: application/json
-
-### Get invoice by alternative ID
-GET {{baseUrl}}/api/v1/invoices/alt/some-alt-id
-Accept: application/json
-
-### Get invoices by user ID
-GET {{baseUrl}}/api/v1/invoices/user/1
-Accept: application/json
-
-### Create a new invoice
+### Create an invoice
 POST {{baseUrl}}/api/v1/invoices
+Authorization: Bearer {{token}}
 Content-Type: application/json
 Accept: application/json
 
 {
   "total": 49.99,
-  "user_id": "1",
+  "user_id": "{{altPersonId}}",
   "paid": false
 }
 
+> {%
+    if (response.body && response.body.id) {
+        client.global.set("invoiceId", response.body.id);
+        client.global.set("altInvoiceId", response.body.alt_id);
+    }
+%}
+
+### Get invoice by ID
+GET {{baseUrl}}/api/v1/invoices/{{invoiceId}}
+Authorization: Bearer {{token}}
+Accept: application/json
+
+### Get invoice by alternative ID
+GET {{baseUrl}}/api/v1/invoices/alt/{{altInvoiceId}}
+Authorization: Bearer {{token}}
+Accept: application/json
+
+### Get invoices by user ID
+GET {{baseUrl}}/api/v1/invoices/user/{{personId}}
+Authorization: Bearer {{token}}
+Accept: application/json
+
+
 ### Update an invoice
-PUT {{baseUrl}}/api/v1/invoices/1
+PUT {{baseUrl}}/api/v1/invoices/{{invoiceId}}
+Authorization: Bearer {{token}}
 Content-Type: application/json
 Accept: application/json
 
@@ -122,46 +180,65 @@ Accept: application/json
   "paid": true
 }
 
-### Delete an invoice
-DELETE {{baseUrl}}/api/v1/invoices/1
-Accept: application/json
-
 ### Invoices-Items API Tests
 
 # Get all invoice items
 GET {{baseUrl}}/api/v1/invoices-items
+Authorization: Bearer {{token}}
 Accept: application/json
 
 ### Get invoice items by invoice ID
-GET {{baseUrl}}/api/v1/invoices-items/invoice/1
+GET {{baseUrl}}/api/v1/invoices-items/invoice/{{invoiceId}}
+Authorization: Bearer {{token}}
 Accept: application/json
 
 ### Get invoice items by item ID
-GET {{baseUrl}}/api/v1/invoices-items/item/1
+GET {{baseUrl}}/api/v1/invoices-items/item/{{itemId}}
+Authorization: Bearer {{token}}
 Accept: application/json
 
 ### Get specific invoice item
-GET {{baseUrl}}/api/v1/invoices-items/1/1
+GET {{baseUrl}}/api/v1/invoices-items/{{invoiceId}}/{{itemId}}
+Authorization: Bearer {{token}}
 Accept: application/json
 
 ### Create a new invoice item
 POST {{baseUrl}}/api/v1/invoices-items
+Authorization: Bearer {{token}}
 Content-Type: application/json
 Accept: application/json
 
 {
-  "invoice_id": "1",
-  "item_id": "1"
+  "invoice_id": "{{altInvoiceId}}",
+  "item_id": "{{itemId}}"
 }
 
 ### Delete a specific invoice item
-DELETE {{baseUrl}}/api/v1/invoices-items/1/1
+DELETE {{baseUrl}}/api/v1/invoices-items/{{altInvoiceId}}/{{itemId}}
+Authorization: Bearer {{token}}
 Accept: application/json
 
 ### Delete all invoice items for an invoice
-DELETE {{baseUrl}}/api/v1/invoices-items/invoice/1
+DELETE {{baseUrl}}/api/v1/invoices-items/invoice/{{altInvoiceId}}
+Authorization: Bearer {{token}}
+Accept: application/json
+
+### Delete an item
+DELETE {{baseUrl}}/api/v1/items/{{altItemId}}
+Authorization: Bearer {{token}}
 Accept: application/json
 
 ### Delete all invoice items for an item
-DELETE {{baseUrl}}/api/v1/invoices-items/item/1
+DELETE {{baseUrl}}/api/v1/invoices-items/item/{{itemId}}
+Authorization: Bearer {{token}}
+Accept: application/json
+
+### Delete an invoice
+DELETE {{baseUrl}}/api/v1/invoices/{{invoiceId}}
+Authorization: Bearer {{token}}
+Accept: application/json
+
+### Delete a person
+DELETE {{baseUrl}}/api/v1/persons/{{personId}}
+Authorization: Bearer {{token}}
 Accept: application/json

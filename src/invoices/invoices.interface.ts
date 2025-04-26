@@ -1,5 +1,5 @@
 export interface Invoice {
-  id?: number;
+  id?: string;
   alt_id?: string;
   total: number;
   paid?: boolean;

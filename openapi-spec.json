@@ -974,6 +974,29 @@
           "invoices-items"
         ]
       }
+    },
+    "/authorize": {
+      "post": {
+        "operationId": "AuthController_authorize",
+        "parameters": [
+          {
+            "name": "authorization",
+            "required": true,
+            "in": "header",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Auth"
+        ]
+      }
     }
   },
   "info": {

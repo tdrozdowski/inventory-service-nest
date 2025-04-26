@@ -4,12 +4,14 @@ import * as request from 'supertest';
 import { AppModule } from './../src/app.module';
 import { Invoice } from '../src/invoices/invoices.interface';
 import { Person } from '../src/persons/persons.interface';
+import { getAuthToken } from './auth-helper';
 
 describe('InvoicesController (e2e)', () => {
   let app: INestApplication;
-  let createdInvoiceId: number;
-  let createdPersonId: number;
+  let createdInvoiceId: string;
+  let createdPersonId: string;
   let personAltId: string;
+  let authToken: string;
 
   // Test person data
   const testPerson: Omit<Person, 'id' | 'alt_id'> = {
@@ -37,9 +39,14 @@ describe('InvoicesController (e2e)', () => {
     app = moduleFixture.createNestApplication();
     await app.init();
 
+    // Get authentication token
+    authToken = await getAuthToken(app);
+    console.log('Auth token obtained for tests');
+
     // Create a test person first
     const personResponse = await request(app.getHttpServer())
       .post('/persons')
+      .set('Authorization', `Bearer ${authToken}`)
       .send(testPerson);
 
     createdPersonId = personResponse.body.id;
@@ -54,6 +61,7 @@ describe('InvoicesController (e2e)', () => {
     if (createdPersonId) {
       await request(app.getHttpServer())
         .delete(`/persons/${createdPersonId}`)
+        .set('Authorization', `Bearer ${authToken}`)
         .expect(200);
     }
 
@@ -63,6 +71,7 @@ describe('InvoicesController (e2e)', () => {
   it('should create an invoice', () => {
     return request(app.getHttpServer())
       .post('/invoices')
+      .set('Authorization', `Bearer ${authToken}`)
       .send(testInvoice)
       .expect(201)
       .expect((res) => {
@@ -80,6 +89,7 @@ describe('InvoicesController (e2e)', () => {
   it('should get all invoices', () => {
     return request(app.getHttpServer())
       .get('/invoices')
+      .set('Authorization', `Bearer ${authToken}`)
       .expect(200)
       .expect((res) => {
         expect(Array.isArray(res.body)).toBe(true);
@@ -90,6 +100,7 @@ describe('InvoicesController (e2e)', () => {
   it('should get an invoice by ID', () => {
     return request(app.getHttpServer())
       .get(`/invoices/${createdInvoiceId}`)
+      .set('Authorization', `Bearer ${authToken}`)
       .expect(200)
       .expect((res) => {
         expect(res.body).toHaveProperty('id', createdInvoiceId);
@@ -102,6 +113,7 @@ describe('InvoicesController (e2e)', () => {
   it('should get invoices by user ID', () => {
     return request(app.getHttpServer())
       .get(`/invoices/user/${testInvoice.user_id}`)
+      .set('Authorization', `Bearer ${authToken}`)
       .expect(200)
       .expect((res) => {
         expect(Array.isArray(res.body)).toBe(true);
@@ -113,6 +125,7 @@ describe('InvoicesController (e2e)', () => {
   it('should update an invoice', () => {
     return request(app.getHttpServer())
       .put(`/invoices/${createdInvoiceId}`)
+      .set('Authorization', `Bearer ${authToken}`)
       .send(updatedInvoice)
       .expect(200)
       .expect((res) => {
@@ -126,12 +139,14 @@ describe('InvoicesController (e2e)', () => {
   it('should delete an invoice', () => {
     return request(app.getHttpServer())
       .delete(`/invoices/${createdInvoiceId}`)
+      .set('Authorization', `Bearer ${authToken}`)
       .expect(200);
   });
 
   it('should return 404 for a deleted invoice', () => {
     return request(app.getHttpServer())
       .get(`/invoices/${createdInvoiceId}`)
+      .set('Authorization', `Bearer ${authToken}`)
       .expect(404);
   });
 });
