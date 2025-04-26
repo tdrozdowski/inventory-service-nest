@@ -1,5 +1,4 @@
 import {
-  BadRequestException,
   Body,
   Controller,
   Delete,
@@ -9,9 +8,9 @@ import {
   Post,
   Put,
 } from '@nestjs/common';
-import { ApiTags, ApiOperation, ApiResponse, ApiParam } from '@nestjs/swagger';
+import { ApiOperation, ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { ItemsService } from './items.service';
-import { CreateItemDto, UpdateItemDto, ItemDto } from './item.dto';
+import { CreateItemDto, ItemDto, UpdateItemDto } from './item.dto';
 
 @ApiTags('items')
 @Controller('items')

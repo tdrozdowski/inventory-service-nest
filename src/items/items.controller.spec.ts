@@ -2,7 +2,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { ItemsController } from './items.controller';
 import { ItemsService } from './items.service';
 import { Item } from './items.interface';
-import { BadRequestException, NotFoundException } from '@nestjs/common';
+import { NotFoundException } from '@nestjs/common';
 
 describe('ItemsController', () => {
   let controller: ItemsController;

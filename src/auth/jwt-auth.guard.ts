@@ -20,13 +20,9 @@ export class JwtAuthGuard implements CanActivate {
     context: ExecutionContext,
   ): boolean | Promise<boolean> | Observable<boolean> {
     // Check if the endpoint is public (no JWT required)
-    const isPublic = this.reflector.get<boolean>(
-      'isPublic',
-      context.getHandler(),
-    ) || this.reflector.get<boolean>(
-      'isPublic',
-      context.getClass(),
-    );
+    const isPublic =
+      this.reflector.get<boolean>('isPublic', context.getHandler()) ||
+      this.reflector.get<boolean>('isPublic', context.getClass());
     if (isPublic) {
       return true;
     }
