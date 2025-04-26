@@ -13,6 +13,25 @@ A RESTful API service for inventory management built with NestJS, Knex.js, and P
 $ npm install
 ```
 
+## API Documentation
+
+This project includes OpenAPI documentation that can be accessed through the following endpoints:
+
+- `/docs` - Swagger UI documentation
+- `/docs-redoc` - ReDoc UI documentation (more user-friendly)
+
+The OpenAPI specification is also available as a JSON file at `/docs-json` and is saved to the project root as `openapi-spec.json`.
+
+To generate or update the OpenAPI specification:
+
+```bash
+# Generate OpenAPI spec (after building the project)
+$ npm run generate-openapi
+
+# The build process automatically generates the OpenAPI spec
+$ npm run build
+```
+
 ## Compile and run the project
 
 ```bash

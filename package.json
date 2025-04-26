@@ -9,9 +9,10 @@
     "node": ">=22.0.0"
   },
   "scripts": {
-    "build": "nest build",
+    "build": "nest build && npm run generate-openapi",
     "clean": "rm -rf dist",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\" \"migrations/**/*.js\" \"seeds/**/*.js\" \"scripts/**/*.js\" \"**/*.json\" \"**/*.yml\" \"**/*.md\" \"knexfile.js\" \".eslintrc.js\"",
+    "generate-openapi": "node scripts/generate-openapi.js",
     "start": "nest start",
     "start:dev": "nest start --watch",
     "start:debug": "nest start --debug --watch",
