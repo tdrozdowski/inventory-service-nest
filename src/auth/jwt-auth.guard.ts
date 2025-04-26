@@ -41,7 +41,8 @@ export class JwtAuthGuard implements CanActivate {
       request['user'] = payload;
       return true;
     } catch (error) {
-      throw new UnauthorizedException('Invalid JWT token');
+      console.error(error);
+      throw new UnauthorizedException('Invalid JWT token: ${error.message}');
     }
   }
 

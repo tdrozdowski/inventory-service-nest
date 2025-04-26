@@ -17,6 +17,7 @@ This document provides guidance on how to write unit tests for different compone
 Unit testing is an essential part of software development that helps ensure your code works as expected. In this project, we use Jest as our testing framework to write and run unit tests.
 
 Each module in the application typically consists of:
+
 - A controller that handles HTTP requests
 - A service that contains business logic
 - A repository that interacts with the database
@@ -28,6 +29,7 @@ Each of these components should be tested in isolation to ensure they work corre
 ### Jest Configuration
 
 The Jest configuration is defined in the `package.json` file. It specifies:
+
 - The test file pattern (`*.spec.ts`)
 - The coverage thresholds
 - The test environment
@@ -36,6 +38,7 @@ The Jest configuration is defined in the `package.json` file. It specifies:
 ### Test Files
 
 Test files should be placed alongside the files they are testing with the `.spec.ts` extension. For example:
+
 - `items.controller.ts` → `items.controller.spec.ts`
 - `items.service.ts` → `items.service.spec.ts`
 - `items.repository.ts` → `items.repository.spec.ts`
@@ -84,7 +87,9 @@ describe('ItemsService', () => {
 
   describe('findAll', () => {
     it('should return an array of items', async () => {
-      const mockItems = [/* mock data */];
+      const mockItems = [
+        /* mock data */
+      ];
       (repository.findAll as jest.Mock).mockResolvedValue(mockItems);
 
       const result = await service.findAll();
@@ -144,7 +149,9 @@ describe('ItemsController', () => {
 
   describe('findAll', () => {
     it('should return an array of items', async () => {
-      const mockItems = [/* mock data */];
+      const mockItems = [
+        /* mock data */
+      ];
       jest.spyOn(service, 'findAll').mockResolvedValue(mockItems);
 
       const result = await controller.findAll();
@@ -206,7 +213,9 @@ describe('ItemsRepository', () => {
 
   describe('findAll', () => {
     it('should return an array of items', async () => {
-      const mockItems = [/* mock data */];
+      const mockItems = [
+        /* mock data */
+      ];
       mockTable.select.mockImplementation(() => mockItems);
 
       const result = await repository.findAll();

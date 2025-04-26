@@ -5,6 +5,7 @@ This directory contains Kubernetes manifests for deploying the Inventory Service
 ## Structure
 
 - `base/`: Contains the base Kubernetes manifests
+
   - `deployment.yaml`: Defines the deployment for the application
   - `service.yaml`: Defines the service to expose the application
   - `configmap.yaml`: Contains non-sensitive configuration
@@ -93,6 +94,7 @@ For sensitive data, we use [Bitnami SealedSecrets](https://github.com/bitnami-la
 To work with SealedSecrets:
 
 1. Install the kubeseal CLI tool:
+
    ```bash
    # Using Homebrew
    brew install kubeseal
@@ -105,6 +107,7 @@ To work with SealedSecrets:
    ```
 
 2. Create a regular Kubernetes Secret (do not commit this to Git):
+
    ```bash
    # Example secret.yaml
    apiVersion: v1
@@ -119,6 +122,7 @@ To work with SealedSecrets:
    ```
 
 3. Generate a SealedSecret using kubeseal:
+
    ```bash
    # Fetch the public key from your cluster
    kubeseal --fetch-cert > public-key-cert.pem

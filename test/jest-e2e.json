@@ -7,17 +7,9 @@
     "^.+\\.(t|j)s$": "ts-jest"
   },
   "collectCoverage": true,
-  "coverageReporters": [
-    "text",
-    "text-summary",
-    "lcov",
-    "html",
-    "json-summary"
-  ],
+  "coverageReporters": ["text", "text-summary", "lcov", "html", "json-summary"],
   "coverageDirectory": "../coverage-e2e",
-  "collectCoverageFrom": [
-    "../src/**/*.(t|j)s"
-  ],
+  "collectCoverageFrom": ["../src/**/*.(t|j)s"],
   "coverageThreshold": {
     "global": {
       "branches": 75,

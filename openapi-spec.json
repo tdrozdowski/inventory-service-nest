@@ -19,9 +19,7 @@
           }
         },
         "summary": "Get hello message",
-        "tags": [
-          "app"
-        ]
+        "tags": ["app"]
       }
     },
     "/items": {
@@ -45,9 +43,7 @@
           }
         },
         "summary": "Get all items",
-        "tags": [
-          "items"
-        ]
+        "tags": ["items"]
       },
       "post": {
         "description": "Creates a new item in the inventory",
@@ -79,9 +75,7 @@
           }
         },
         "summary": "Create item",
-        "tags": [
-          "items"
-        ]
+        "tags": ["items"]
       }
     },
     "/items/alt/{altId}": {
@@ -115,9 +109,7 @@
           }
         },
         "summary": "Get item by alternative ID",
-        "tags": [
-          "items"
-        ]
+        "tags": ["items"]
       }
     },
     "/items/{id}": {
@@ -151,9 +143,7 @@
           }
         },
         "summary": "Get item by ID",
-        "tags": [
-          "items"
-        ]
+        "tags": ["items"]
       },
       "put": {
         "description": "Updates an existing item in the inventory",
@@ -198,9 +188,7 @@
           }
         },
         "summary": "Update item",
-        "tags": [
-          "items"
-        ]
+        "tags": ["items"]
       },
       "delete": {
         "description": "Deletes an item from the inventory",
@@ -225,9 +213,7 @@
           }
         },
         "summary": "Delete item",
-        "tags": [
-          "items"
-        ]
+        "tags": ["items"]
       }
     },
     "/persons": {
@@ -251,9 +237,7 @@
           }
         },
         "summary": "Get all persons",
-        "tags": [
-          "persons"
-        ]
+        "tags": ["persons"]
       },
       "post": {
         "description": "Creates a new person in the system",
@@ -285,9 +269,7 @@
           }
         },
         "summary": "Create person",
-        "tags": [
-          "persons"
-        ]
+        "tags": ["persons"]
       }
     },
     "/persons/alt/{altId}": {
@@ -321,9 +303,7 @@
           }
         },
         "summary": "Get person by alternative ID",
-        "tags": [
-          "persons"
-        ]
+        "tags": ["persons"]
       }
     },
     "/persons/email/{email}": {
@@ -357,9 +337,7 @@
           }
         },
         "summary": "Get person by email",
-        "tags": [
-          "persons"
-        ]
+        "tags": ["persons"]
       }
     },
     "/persons/{id}": {
@@ -393,9 +371,7 @@
           }
         },
         "summary": "Get person by ID",
-        "tags": [
-          "persons"
-        ]
+        "tags": ["persons"]
       },
       "put": {
         "description": "Updates an existing person in the system",
@@ -440,9 +416,7 @@
           }
         },
         "summary": "Update person",
-        "tags": [
-          "persons"
-        ]
+        "tags": ["persons"]
       },
       "delete": {
         "description": "Deletes a person from the system",
@@ -467,9 +441,7 @@
           }
         },
         "summary": "Delete person",
-        "tags": [
-          "persons"
-        ]
+        "tags": ["persons"]
       }
     },
     "/invoices": {
@@ -493,9 +465,7 @@
           }
         },
         "summary": "Get all invoices",
-        "tags": [
-          "invoices"
-        ]
+        "tags": ["invoices"]
       },
       "post": {
         "description": "Creates a new invoice in the system",
@@ -527,9 +497,7 @@
           }
         },
         "summary": "Create invoice",
-        "tags": [
-          "invoices"
-        ]
+        "tags": ["invoices"]
       }
     },
     "/invoices/alt/{altId}": {
@@ -563,9 +531,7 @@
           }
         },
         "summary": "Get invoice by alternative ID",
-        "tags": [
-          "invoices"
-        ]
+        "tags": ["invoices"]
       }
     },
     "/invoices/user/{userId}": {
@@ -599,9 +565,7 @@
           }
         },
         "summary": "Get invoices by user ID",
-        "tags": [
-          "invoices"
-        ]
+        "tags": ["invoices"]
       }
     },
     "/invoices/{id}": {
@@ -635,9 +599,7 @@
           }
         },
         "summary": "Get invoice by ID",
-        "tags": [
-          "invoices"
-        ]
+        "tags": ["invoices"]
       },
       "put": {
         "description": "Updates an existing invoice in the system",
@@ -682,9 +644,7 @@
           }
         },
         "summary": "Update invoice",
-        "tags": [
-          "invoices"
-        ]
+        "tags": ["invoices"]
       },
       "delete": {
         "description": "Deletes an invoice from the system",
@@ -709,9 +669,7 @@
           }
         },
         "summary": "Delete invoice",
-        "tags": [
-          "invoices"
-        ]
+        "tags": ["invoices"]
       }
     },
     "/invoices-items": {
@@ -735,9 +693,7 @@
           }
         },
         "summary": "Get all invoice items",
-        "tags": [
-          "invoices-items"
-        ]
+        "tags": ["invoices-items"]
       },
       "post": {
         "description": "Creates a new association between an invoice and an item",
@@ -769,9 +725,7 @@
           }
         },
         "summary": "Create invoice item",
-        "tags": [
-          "invoices-items"
-        ]
+        "tags": ["invoices-items"]
       }
     },
     "/invoices-items/invoice/{invoiceId}": {
@@ -805,9 +759,7 @@
           }
         },
         "summary": "Get invoice items by invoice ID",
-        "tags": [
-          "invoices-items"
-        ]
+        "tags": ["invoices-items"]
       },
       "delete": {
         "description": "Deletes all items associated with a specific invoice",
@@ -829,9 +781,7 @@
           }
         },
         "summary": "Delete invoice items by invoice ID",
-        "tags": [
-          "invoices-items"
-        ]
+        "tags": ["invoices-items"]
       }
     },
     "/invoices-items/item/{itemId}": {
@@ -865,9 +815,7 @@
           }
         },
         "summary": "Get invoice items by item ID",
-        "tags": [
-          "invoices-items"
-        ]
+        "tags": ["invoices-items"]
       },
       "delete": {
         "description": "Deletes all invoices associated with a specific item",
@@ -889,9 +837,7 @@
           }
         },
         "summary": "Delete invoice items by item ID",
-        "tags": [
-          "invoices-items"
-        ]
+        "tags": ["invoices-items"]
       }
     },
     "/invoices-items/{invoiceId}/{itemId}": {
@@ -934,9 +880,7 @@
           }
         },
         "summary": "Get specific invoice item",
-        "tags": [
-          "invoices-items"
-        ]
+        "tags": ["invoices-items"]
       },
       "delete": {
         "description": "Deletes a specific association between an invoice and an item",
@@ -970,9 +914,7 @@
           }
         },
         "summary": "Delete specific invoice item",
-        "tags": [
-          "invoices-items"
-        ]
+        "tags": ["invoices-items"]
       }
     },
     "/authorize": {
@@ -993,9 +935,7 @@
             "description": ""
           }
         },
-        "tags": [
-          "Auth"
-        ]
+        "tags": ["Auth"]
       }
     }
   },
@@ -1054,11 +994,7 @@
             "description": "Who last changed the item"
           }
         },
-        "required": [
-          "name",
-          "description",
-          "unit_price"
-        ]
+        "required": ["name", "description", "unit_price"]
       },
       "CreateItemDto": {
         "type": "object",
@@ -1081,11 +1017,7 @@
             "description": "Who created the item"
           }
         },
-        "required": [
-          "name",
-          "description",
-          "unit_price"
-        ]
+        "required": ["name", "description", "unit_price"]
       },
       "UpdateItemDto": {
         "type": "object",
@@ -1149,10 +1081,7 @@
             "description": "Who last changed the person"
           }
         },
-        "required": [
-          "name",
-          "email"
-        ]
+        "required": ["name", "email"]
       },
       "CreatePersonDto": {
         "type": "object",
@@ -1171,10 +1100,7 @@
             "description": "Who created the person"
           }
         },
-        "required": [
-          "name",
-          "email"
-        ]
+        "required": ["name", "email"]
       },
       "UpdatePersonDto": {
         "type": "object",
@@ -1239,10 +1165,7 @@
             "description": "Who last changed the invoice"
           }
         },
-        "required": [
-          "total",
-          "user_id"
-        ]
+        "required": ["total", "user_id"]
       },
       "CreateInvoiceDto": {
         "type": "object",
@@ -1266,10 +1189,7 @@
             "description": "Who created the invoice"
           }
         },
-        "required": [
-          "total",
-          "user_id"
-        ]
+        "required": ["total", "user_id"]
       },
       "UpdateInvoiceDto": {
         "type": "object",
@@ -1305,10 +1225,7 @@
             "description": "The ID of the item"
           }
         },
-        "required": [
-          "invoice_id",
-          "item_id"
-        ]
+        "required": ["invoice_id", "item_id"]
       }
     }
   }
