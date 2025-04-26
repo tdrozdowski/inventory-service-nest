@@ -15,7 +15,7 @@ export class InvoicesRepository {
     }));
   }
 
-  async findOne(id: number): Promise<Invoice> {
+  async findOne(id: string): Promise<Invoice> {
     const invoice = await this.knex.table('invoices').where('id', id).first();
     if (invoice) {
       invoice.total = Number(invoice.total);
@@ -59,7 +59,7 @@ export class InvoicesRepository {
     return result;
   }
 
-  async update(id: number, invoice: Partial<Invoice>): Promise<Invoice> {
+  async update(id: string, invoice: Partial<Invoice>): Promise<Invoice> {
     const invoiceToUpdate = {
       ...invoice,
       last_update: new Date(),
@@ -78,7 +78,7 @@ export class InvoicesRepository {
     return result;
   }
 
-  async remove(id: number): Promise<void> {
+  async remove(id: string): Promise<void> {
     await this.knex.table('invoices').where('id', id).delete();
   }
 }

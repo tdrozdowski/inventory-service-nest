@@ -11,7 +11,7 @@ export class PersonsRepository {
     return this.knex.table('persons').select('*');
   }
 
-  async findOne(id: number): Promise<Person> {
+  async findOne(id: string): Promise<Person> {
     return this.knex.table('persons').where('id', id).first();
   }
 
@@ -35,7 +35,7 @@ export class PersonsRepository {
     return result;
   }
 
-  async update(id: number, person: Partial<Person>): Promise<Person> {
+  async update(id: string, person: Partial<Person>): Promise<Person> {
     const personToUpdate = {
       ...person,
       last_update: new Date(),
@@ -49,7 +49,7 @@ export class PersonsRepository {
     return result;
   }
 
-  async remove(id: number): Promise<void> {
+  async remove(id: string): Promise<void> {
     await this.knex.table('persons').where('id', id).delete();
   }
 }

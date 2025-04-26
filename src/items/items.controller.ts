@@ -65,7 +65,7 @@ export class ItemsController {
   })
   @ApiResponse({ status: 404, description: 'Item not found' })
   async findOne(@Param('id') id: string): Promise<ItemDto> {
-    const item = await this.itemsService.findOne(+id);
+    const item = await this.itemsService.findOne(id);
     if (!item) {
       throw new NotFoundException(`Item with ID ${id} not found`);
     }
@@ -104,12 +104,7 @@ export class ItemsController {
     @Param('id') id: string,
     @Body() updateItemDto: UpdateItemDto,
   ): Promise<ItemDto> {
-    const itemId = +id;
-    if (isNaN(itemId)) {
-      throw new BadRequestException(`Invalid item ID: ${id}`);
-    }
-
-    const updatedItem = await this.itemsService.update(itemId, updateItemDto);
+    const updatedItem = await this.itemsService.update(id, updateItemDto);
     if (!updatedItem) {
       throw new NotFoundException(`Item with ID ${id} not found`);
     }
@@ -126,6 +121,6 @@ export class ItemsController {
   @ApiResponse({ status: 200, description: 'Item deleted successfully' })
   @ApiResponse({ status: 404, description: 'Item not found' })
   remove(@Param('id') id: string): Promise<void> {
-    return this.itemsService.remove(+id);
+    return this.itemsService.remove(id);
   }
 }

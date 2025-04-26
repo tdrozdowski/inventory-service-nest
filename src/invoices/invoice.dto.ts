@@ -43,7 +43,7 @@ export class UpdateInvoiceDto {
 
 export class InvoiceDto {
   @ApiPropertyOptional({ description: 'The unique identifier for the invoice' })
-  id?: number;
+  id?: string;
 
   @ApiPropertyOptional({
     description: 'An alternative identifier for the invoice',

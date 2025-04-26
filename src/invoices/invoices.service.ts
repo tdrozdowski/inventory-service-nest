@@ -10,7 +10,7 @@ export class InvoicesService {
     return this.invoicesRepository.findAll();
   }
 
-  async findOne(id: number): Promise<Invoice> {
+  async findOne(id: string): Promise<Invoice> {
     return this.invoicesRepository.findOne(id);
   }
 
@@ -26,11 +26,11 @@ export class InvoicesService {
     return this.invoicesRepository.create(invoice);
   }
 
-  async update(id: number, invoice: Partial<Invoice>): Promise<Invoice> {
+  async update(id: string, invoice: Partial<Invoice>): Promise<Invoice> {
     return this.invoicesRepository.update(id, invoice);
   }
 
-  async remove(id: number): Promise<void> {
+  async remove(id: string): Promise<void> {
     await this.invoicesRepository.remove(id);
   }
 }

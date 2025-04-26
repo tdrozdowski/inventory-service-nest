@@ -11,7 +11,7 @@ describe('ItemsController', () => {
   // Mock data
   const mockItems: Item[] = [
     {
-      id: 1,
+      id: '1',
       alt_id: 'item-001',
       name: 'Test Item 1',
       description: 'This is test item 1',
@@ -22,7 +22,7 @@ describe('ItemsController', () => {
       last_changed_by: 'system',
     },
     {
-      id: 2,
+      id: '2',
       alt_id: 'item-002',
       name: 'Test Item 2',
       description: 'This is test item 2',
@@ -105,7 +105,7 @@ describe('ItemsController', () => {
       const result = await controller.findOne('1');
 
       expect(result).toEqual(mockItem);
-      expect(service.findOne).toHaveBeenCalledWith(1);
+      expect(service.findOne).toHaveBeenCalledWith('1');
     });
 
     it('should throw NotFoundException when item is not found', async () => {
@@ -114,7 +114,7 @@ describe('ItemsController', () => {
       await expect(controller.findOne('999')).rejects.toThrow(
         NotFoundException,
       );
-      expect(service.findOne).toHaveBeenCalledWith(999);
+      expect(service.findOne).toHaveBeenCalledWith('999');
     });
 
     it('should propagate errors from service', async () => {
@@ -122,7 +122,7 @@ describe('ItemsController', () => {
       jest.spyOn(service, 'findOne').mockRejectedValue(error);
 
       await expect(controller.findOne('1')).rejects.toThrow('Service error');
-      expect(service.findOne).toHaveBeenCalledWith(1);
+      expect(service.findOne).toHaveBeenCalledWith('1');
     });
   });
 
@@ -158,7 +158,7 @@ describe('ItemsController', () => {
 
   describe('create', () => {
     it('should create and return a new item', async () => {
-      const createdItem = { ...mockItemToCreate, id: 3, alt_id: 'item-003' };
+      const createdItem = { ...mockItemToCreate, id: '3', alt_id: 'item-003' };
       jest.spyOn(service, 'create').mockResolvedValue(createdItem);
 
       const result = await controller.create(mockItemToCreate);
@@ -187,16 +187,17 @@ describe('ItemsController', () => {
       const result = await controller.update('1', itemToUpdate);
 
       expect(result).toEqual(updatedItem);
-      expect(service.update).toHaveBeenCalledWith(1, itemToUpdate);
+      expect(service.update).toHaveBeenCalledWith('1', itemToUpdate);
     });
 
-    it('should throw BadRequestException for invalid ID', async () => {
+    it('should throw NotFoundException for invalid ID', async () => {
       const itemToUpdate = { name: 'Updated Item' };
+      jest.spyOn(service, 'update').mockResolvedValue(null);
 
       await expect(controller.update('invalid', itemToUpdate)).rejects.toThrow(
-        BadRequestException,
+        NotFoundException,
       );
-      expect(service.update).not.toHaveBeenCalled();
+      expect(service.update).toHaveBeenCalledWith('invalid', itemToUpdate);
     });
 
     it('should throw NotFoundException when item is not found', async () => {
@@ -206,7 +207,7 @@ describe('ItemsController', () => {
       await expect(controller.update('999', itemToUpdate)).rejects.toThrow(
         NotFoundException,
       );
-      expect(service.update).toHaveBeenCalledWith(999, itemToUpdate);
+      expect(service.update).toHaveBeenCalledWith('999', itemToUpdate);
     });
 
     it('should propagate errors from service', async () => {
@@ -217,7 +218,7 @@ describe('ItemsController', () => {
       await expect(controller.update('1', itemToUpdate)).rejects.toThrow(
         'Service error',
       );
-      expect(service.update).toHaveBeenCalledWith(1, itemToUpdate);
+      expect(service.update).toHaveBeenCalledWith('1', itemToUpdate);
     });
   });
 
@@ -227,7 +228,7 @@ describe('ItemsController', () => {
 
       await controller.remove('1');
 
-      expect(service.remove).toHaveBeenCalledWith(1);
+      expect(service.remove).toHaveBeenCalledWith('1');
     });
 
     it('should propagate errors from service', async () => {
@@ -235,7 +236,7 @@ describe('ItemsController', () => {
       jest.spyOn(service, 'remove').mockRejectedValue(error);
 
       await expect(controller.remove('1')).rejects.toThrow('Service error');
-      expect(service.remove).toHaveBeenCalledWith(1);
+      expect(service.remove).toHaveBeenCalledWith('1');
     });
   });
 });

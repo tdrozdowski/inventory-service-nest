@@ -14,7 +14,7 @@ describe('InvoicesRepository', () => {
   // Mock data
   const mockInvoices: Invoice[] = [
     {
-      id: 1,
+      id: '1',
       alt_id: 'invoice-001',
       total: 100.5,
       paid: false,
@@ -25,7 +25,7 @@ describe('InvoicesRepository', () => {
       last_changed_by: 'system',
     },
     {
-      id: 2,
+      id: '2',
       alt_id: 'invoice-002',
       total: 200.75,
       paid: true,
@@ -36,7 +36,7 @@ describe('InvoicesRepository', () => {
       last_changed_by: 'system',
     },
     {
-      id: 3,
+      id: '3',
       alt_id: 'invoice-003',
       total: 150.25,
       paid: false,
@@ -94,22 +94,22 @@ describe('InvoicesRepository', () => {
     it('should return a single invoice by id', async () => {
       mockTable.first.mockResolvedValue(mockInvoice);
 
-      const result = await repository.findOne(1);
+      const result = await repository.findOne('1');
 
       expect(result).toEqual(mockInvoice);
       expect(mockKnex.table).toHaveBeenCalledWith('invoices');
-      expect(mockTable.where).toHaveBeenCalledWith('id', 1);
+      expect(mockTable.where).toHaveBeenCalledWith('id', '1');
       expect(mockTable.first).toHaveBeenCalled();
     });
 
     it('should return null when invoice is not found', async () => {
       mockTable.first.mockResolvedValue(null);
 
-      const result = await repository.findOne(999);
+      const result = await repository.findOne('999');
 
       expect(result).toBeNull();
       expect(mockKnex.table).toHaveBeenCalledWith('invoices');
-      expect(mockTable.where).toHaveBeenCalledWith('id', 999);
+      expect(mockTable.where).toHaveBeenCalledWith('id', '999');
       expect(mockTable.first).toHaveBeenCalled();
     });
 
@@ -117,9 +117,9 @@ describe('InvoicesRepository', () => {
       const error = new Error('Database error');
       mockTable.first.mockRejectedValue(error);
 
-      await expect(repository.findOne(1)).rejects.toThrow('Database error');
+      await expect(repository.findOne('1')).rejects.toThrow('Database error');
       expect(mockKnex.table).toHaveBeenCalledWith('invoices');
-      expect(mockTable.where).toHaveBeenCalledWith('id', 1);
+      expect(mockTable.where).toHaveBeenCalledWith('id', '1');
       expect(mockTable.first).toHaveBeenCalled();
     });
   });
@@ -203,7 +203,7 @@ describe('InvoicesRepository', () => {
       };
       const createdInvoice = {
         ...invoiceToCreate,
-        id: 4,
+        id: '4',
         alt_id: 'invoice-004',
         created_by: 'system',
       };
@@ -229,7 +229,7 @@ describe('InvoicesRepository', () => {
       };
       const createdInvoice = {
         ...invoiceWithCreatedBy,
-        id: 4,
+        id: '4',
         alt_id: 'invoice-004',
       };
       mockTable.returning.mockResolvedValue([createdInvoice]);
@@ -269,11 +269,11 @@ describe('InvoicesRepository', () => {
       const updatedInvoice = { ...mockInvoice, total: 150.0 };
       mockTable.returning.mockResolvedValue([updatedInvoice]);
 
-      const result = await repository.update(1, invoiceToUpdate);
+      const result = await repository.update('1', invoiceToUpdate);
 
       expect(result).toEqual(updatedInvoice);
       expect(mockKnex.table).toHaveBeenCalledWith('invoices');
-      expect(mockTable.where).toHaveBeenCalledWith('id', 1);
+      expect(mockTable.where).toHaveBeenCalledWith('id', '1');
       expect(mockTable.update).toHaveBeenCalledWith({
         ...invoiceToUpdate,
         last_update: expect.any(Date),
@@ -290,11 +290,11 @@ describe('InvoicesRepository', () => {
       const updatedInvoice = { ...mockInvoice, ...invoiceToUpdate };
       mockTable.returning.mockResolvedValue([updatedInvoice]);
 
-      const result = await repository.update(1, invoiceToUpdate);
+      const result = await repository.update('1', invoiceToUpdate);
 
       expect(result).toEqual(updatedInvoice);
       expect(mockKnex.table).toHaveBeenCalledWith('invoices');
-      expect(mockTable.where).toHaveBeenCalledWith('id', 1);
+      expect(mockTable.where).toHaveBeenCalledWith('id', '1');
       expect(mockTable.update).toHaveBeenCalledWith({
         ...invoiceToUpdate,
         last_update: expect.any(Date),
@@ -305,11 +305,11 @@ describe('InvoicesRepository', () => {
     it('should return undefined when no invoice is updated', async () => {
       mockTable.returning.mockResolvedValue([]);
 
-      const result = await repository.update(999, { total: 150.0 });
+      const result = await repository.update('999', { total: 150.0 });
 
       expect(result).toBeUndefined();
       expect(mockKnex.table).toHaveBeenCalledWith('invoices');
-      expect(mockTable.where).toHaveBeenCalledWith('id', 999);
+      expect(mockTable.where).toHaveBeenCalledWith('id', '999');
       expect(mockTable.update).toHaveBeenCalledWith({
         total: 150.0,
         last_update: expect.any(Date),
@@ -323,11 +323,11 @@ describe('InvoicesRepository', () => {
       const error = new Error('Database error');
       mockTable.returning.mockRejectedValue(error);
 
-      await expect(repository.update(1, invoiceToUpdate)).rejects.toThrow(
+      await expect(repository.update('1', invoiceToUpdate)).rejects.toThrow(
         'Database error',
       );
       expect(mockKnex.table).toHaveBeenCalledWith('invoices');
-      expect(mockTable.where).toHaveBeenCalledWith('id', 1);
+      expect(mockTable.where).toHaveBeenCalledWith('id', '1');
       expect(mockTable.update).toHaveBeenCalledWith({
         ...invoiceToUpdate,
         last_update: expect.any(Date),
@@ -341,20 +341,20 @@ describe('InvoicesRepository', () => {
     it('should remove an invoice', async () => {
       mockTable.delete.mockResolvedValue(1);
 
-      await repository.remove(1);
+      await repository.remove('1');
 
       expect(mockKnex.table).toHaveBeenCalledWith('invoices');
-      expect(mockTable.where).toHaveBeenCalledWith('id', 1);
+      expect(mockTable.where).toHaveBeenCalledWith('id', '1');
       expect(mockTable.delete).toHaveBeenCalled();
     });
 
     it('should handle case when no invoice is removed', async () => {
       mockTable.delete.mockResolvedValue(0);
 
-      await repository.remove(999);
+      await repository.remove('999');
 
       expect(mockKnex.table).toHaveBeenCalledWith('invoices');
-      expect(mockTable.where).toHaveBeenCalledWith('id', 999);
+      expect(mockTable.where).toHaveBeenCalledWith('id', '999');
       expect(mockTable.delete).toHaveBeenCalled();
     });
 
@@ -362,9 +362,9 @@ describe('InvoicesRepository', () => {
       const error = new Error('Database error');
       mockTable.delete.mockRejectedValue(error);
 
-      await expect(repository.remove(1)).rejects.toThrow('Database error');
+      await expect(repository.remove('1')).rejects.toThrow('Database error');
       expect(mockKnex.table).toHaveBeenCalledWith('invoices');
-      expect(mockTable.where).toHaveBeenCalledWith('id', 1);
+      expect(mockTable.where).toHaveBeenCalledWith('id', '1');
       expect(mockTable.delete).toHaveBeenCalled();
     });
   });

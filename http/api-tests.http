@@ -8,7 +8,7 @@ Content-Type: application/json
 Accept: application/json
 
 > {%
-    if (response.body && response.body.token) {
+    if (response.status >= 200 && response.status < 300 && response.body && response.body.token) {
         client.global.set("token", response.body.token);
     }
 %}
@@ -18,6 +18,12 @@ Accept: application/json
 GET {{baseUrl}}/api/v1/items
 Authorization: Bearer {{token}}
 Accept: application/json
+
+> {%
+    client.test("Status code is 200", function() {
+        client.assert(response.status >= 200 && response.status < 300, "Response status is not 2xx");
+    });
+%}
 
 ### Create Item
 
@@ -34,9 +40,9 @@ Accept: application/json
 }
 
 > {%
-    if (response.body && response.body.id) {
-        client.global.set("itemId", response.body.alt_id);
-        client.global.set("altItemId", response.body.id);
+    if (response.status >= 200 && response.status < 300 && response.body && response.body.id) {
+        client.global.set("itemId", response.body.id);
+        client.global.set("altItemId", response.body.alt_id);
     }
 %}
 
@@ -45,10 +51,22 @@ GET {{baseUrl}}/api/v1/items/{{itemId}}
 Authorization: Bearer {{token}}
 Accept: application/json
 
+> {%
+    client.test("Status code is 200", function() {
+        client.assert(response.status >= 200 && response.status < 300, "Response status is not 2xx");
+    });
+%}
+
 ### Get item by alternative ID
 GET {{baseUrl}}/api/v1/items/alt/{{altItemId}}
 Authorization: Bearer {{token}}
 Accept: application/json
+
+> {%
+    client.test("Status code is 200", function() {
+        client.assert(response.status >= 200 && response.status < 300, "Response status is not 2xx");
+    });
+%}
 
 ### Update an item
 PUT {{baseUrl}}/api/v1/items/{{itemId}}
@@ -62,6 +80,12 @@ Accept: application/json
   "unit_price": 29.99
 }
 
+> {%
+    client.test("Status code is 200", function() {
+        client.assert(response.status >= 200 && response.status < 300, "Response status is not 2xx");
+    });
+%}
+
 
 
 ### Persons API Tests
@@ -70,6 +94,12 @@ Accept: application/json
 GET {{baseUrl}}/api/v1/persons
 Authorization: Bearer {{token}}
 Accept: application/json
+
+> {%
+    client.test("Status code is 200", function() {
+        client.assert(response.status >= 200 && response.status < 300, "Response status is not 2xx");
+    });
+%}
 
 ### Create a Person
 < {%
@@ -88,7 +118,7 @@ Accept: application/json
 }
 
 > {%
-  if (response.body && response.body.id) {
+  if (response.status >= 200 && response.status < 300 && response.body && response.body.id) {
     client.global.set("personId", response.body.id);
     client.global.set("altPersonId", response.body.alt_id);
   }
@@ -99,15 +129,33 @@ GET {{baseUrl}}/api/v1/persons/{{personId}}
 Authorization: Bearer {{token}}
 Accept: application/json
 
+> {%
+    client.test("Status code is 200", function() {
+        client.assert(response.status >= 200 && response.status < 300, "Response status is not 2xx");
+    });
+%}
+
 ### Get person by alternative ID
 GET {{baseUrl}}/api/v1/persons/alt/{{altPersonId}}
 Authorization: Bearer {{token}}
 Accept: application/json
 
+> {%
+    client.test("Status code is 200", function() {
+        client.assert(response.status >= 200 && response.status < 300, "Response status is not 2xx");
+    });
+%}
+
 ### Get person by email
 GET {{baseUrl}}/api/v1/persons/email/test@example.com
 Authorization: Bearer {{token}}
 Accept: application/json
+
+> {%
+    client.test("Status code is 200", function() {
+        client.assert(response.status >= 200 && response.status < 300, "Response status is not 2xx");
+    });
+%}
 
 ### Update a person
 < {%
@@ -125,6 +173,12 @@ Accept: application/json
   "email": "{{updatedEmail}}"
 }
 
+> {%
+    client.test("Status code is 200", function() {
+        client.assert(response.status >= 200 && response.status < 300, "Response status is not 2xx");
+    });
+%}
+
 
 
 ### Invoices API Tests
@@ -133,6 +187,12 @@ Accept: application/json
 GET {{baseUrl}}/api/v1/invoices
 Authorization: Bearer {{token}}
 Accept: application/json
+
+> {%
+    client.test("Status code is 200", function() {
+        client.assert(response.status >= 200 && response.status < 300, "Response status is not 2xx");
+    });
+%}
 
 ### Create an invoice
 POST {{baseUrl}}/api/v1/invoices
@@ -147,7 +207,7 @@ Accept: application/json
 }
 
 > {%
-    if (response.body && response.body.id) {
+    if (response.status >= 200 && response.status < 300 && response.body && response.body.id) {
         client.global.set("invoiceId", response.body.id);
         client.global.set("altInvoiceId", response.body.alt_id);
     }
@@ -158,15 +218,33 @@ GET {{baseUrl}}/api/v1/invoices/{{invoiceId}}
 Authorization: Bearer {{token}}
 Accept: application/json
 
+> {%
+    client.test("Status code is 200", function() {
+        client.assert(response.status >= 200 && response.status < 300, "Response status is not 2xx");
+    });
+%}
+
 ### Get invoice by alternative ID
 GET {{baseUrl}}/api/v1/invoices/alt/{{altInvoiceId}}
 Authorization: Bearer {{token}}
 Accept: application/json
 
+> {%
+    client.test("Status code is 200", function() {
+        client.assert(response.status >= 200 && response.status < 300, "Response status is not 2xx");
+    });
+%}
+
 ### Get invoices by user ID
-GET {{baseUrl}}/api/v1/invoices/user/{{personId}}
+GET {{baseUrl}}/api/v1/invoices/user/{{altPersonId}}
 Authorization: Bearer {{token}}
 Accept: application/json
+
+> {%
+    client.test("Status code is 200", function() {
+        client.assert(response.status >= 200 && response.status < 300, "Response status is not 2xx");
+    });
+%}
 
 
 ### Update an invoice
@@ -180,6 +258,12 @@ Accept: application/json
   "paid": true
 }
 
+> {%
+    client.test("Status code is 200", function() {
+        client.assert(response.status >= 200 && response.status < 300, "Response status is not 2xx");
+    });
+%}
+
 ### Invoices-Items API Tests
 
 # Get all invoice items
@@ -187,20 +271,44 @@ GET {{baseUrl}}/api/v1/invoices-items
 Authorization: Bearer {{token}}
 Accept: application/json
 
+> {%
+    client.test("Status code is 200", function() {
+        client.assert(response.status >= 200 && response.status < 300, "Response status is not 2xx");
+    });
+%}
+
 ### Get invoice items by invoice ID
-GET {{baseUrl}}/api/v1/invoices-items/invoice/{{invoiceId}}
+GET {{baseUrl}}/api/v1/invoices-items/invoice/{{altInvoiceId}}
 Authorization: Bearer {{token}}
 Accept: application/json
+
+> {%
+    client.test("Status code is 200", function() {
+        client.assert(response.status >= 200 && response.status < 300, "Response status is not 2xx");
+    });
+%}
 
 ### Get invoice items by item ID
-GET {{baseUrl}}/api/v1/invoices-items/item/{{itemId}}
+GET {{baseUrl}}/api/v1/invoices-items/item/{{altItemId}}
 Authorization: Bearer {{token}}
 Accept: application/json
 
+> {%
+    client.test("Status code is 200", function() {
+        client.assert(response.status >= 200 && response.status < 300, "Response status is not 2xx");
+    });
+%}
+
 ### Get specific invoice item
-GET {{baseUrl}}/api/v1/invoices-items/{{invoiceId}}/{{itemId}}
+GET {{baseUrl}}/api/v1/invoices-items/{{altInvoiceId}}/{{altItemId}}
 Authorization: Bearer {{token}}
 Accept: application/json
+
+> {%
+    client.test("Status code is 200", function() {
+        client.assert(response.status >= 200 && response.status < 300, "Response status is not 2xx");
+    });
+%}
 
 ### Create a new invoice item
 POST {{baseUrl}}/api/v1/invoices-items
@@ -210,35 +318,77 @@ Accept: application/json
 
 {
   "invoice_id": "{{altInvoiceId}}",
-  "item_id": "{{itemId}}"
+  "item_id": "{{altItemId}}"
 }
 
+> {%
+    client.test("Status code is 200", function() {
+        client.assert(response.status >= 200 && response.status < 300, "Response status is not 2xx");
+    });
+%}
+
 ### Delete a specific invoice item
-DELETE {{baseUrl}}/api/v1/invoices-items/{{altInvoiceId}}/{{itemId}}
+DELETE {{baseUrl}}/api/v1/invoices-items/{{altInvoiceId}}/{{altItemId}}
 Authorization: Bearer {{token}}
 Accept: application/json
+
+> {%
+    client.test("Status code is 200", function() {
+        client.assert(response.status >= 200 && response.status < 300, "Response status is not 2xx");
+    });
+%}
 
 ### Delete all invoice items for an invoice
 DELETE {{baseUrl}}/api/v1/invoices-items/invoice/{{altInvoiceId}}
 Authorization: Bearer {{token}}
 Accept: application/json
 
+> {%
+    client.test("Status code is 200", function() {
+        client.assert(response.status >= 200 && response.status < 300, "Response status is not 2xx");
+    });
+%}
+
 ### Delete an item
-DELETE {{baseUrl}}/api/v1/items/{{altItemId}}
+DELETE {{baseUrl}}/api/v1/items/{{itemId}}
 Authorization: Bearer {{token}}
 Accept: application/json
 
+> {%
+    client.test("Status code is 200", function() {
+        client.assert(response.status >= 200 && response.status < 300, "Response status is not 2xx");
+    });
+%}
+
 ### Delete all invoice items for an item
-DELETE {{baseUrl}}/api/v1/invoices-items/item/{{itemId}}
+DELETE {{baseUrl}}/api/v1/invoices-items/item/{{altItemId}}
 Authorization: Bearer {{token}}
 Accept: application/json
+
+> {%
+    client.test("Status code is 200", function() {
+        client.assert(response.status >= 200 && response.status < 300, "Response status is not 2xx");
+    });
+%}
 
 ### Delete an invoice
 DELETE {{baseUrl}}/api/v1/invoices/{{invoiceId}}
 Authorization: Bearer {{token}}
 Accept: application/json
 
+> {%
+    client.test("Status code is 200", function() {
+        client.assert(response.status >= 200 && response.status < 300, "Response status is not 2xx");
+    });
+%}
+
 ### Delete a person
 DELETE {{baseUrl}}/api/v1/persons/{{personId}}
 Authorization: Bearer {{token}}
 Accept: application/json
+
+> {%
+    client.test("Status code is 200", function() {
+        client.assert(response.status >= 200 && response.status < 300, "Response status is not 2xx");
+    });
+%}

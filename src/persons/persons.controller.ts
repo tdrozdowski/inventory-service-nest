@@ -84,7 +84,7 @@ export class PersonsController {
   })
   @ApiResponse({ status: 404, description: 'Person not found' })
   async findOne(@Param('id') id: string): Promise<PersonDto> {
-    const person = await this.personsService.findOne(+id);
+    const person = await this.personsService.findOne(id);
     if (!person) {
       throw new NotFoundException(`Person with ID ${id} not found`);
     }
@@ -123,7 +123,7 @@ export class PersonsController {
     @Param('id') id: string,
     @Body() updatePersonDto: UpdatePersonDto,
   ): Promise<PersonDto> {
-    return this.personsService.update(+id, updatePersonDto);
+    return this.personsService.update(id, updatePersonDto);
   }
 
   @Delete(':id')
@@ -135,6 +135,6 @@ export class PersonsController {
   @ApiResponse({ status: 200, description: 'Person deleted successfully' })
   @ApiResponse({ status: 404, description: 'Person not found' })
   remove(@Param('id') id: string): Promise<void> {
-    return this.personsService.remove(+id);
+    return this.personsService.remove(id);
   }
 }

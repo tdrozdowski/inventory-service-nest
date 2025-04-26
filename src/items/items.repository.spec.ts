@@ -14,7 +14,7 @@ describe('ItemsRepository', () => {
   // Mock data
   const mockItems: Item[] = [
     {
-      id: 1,
+      id: '1',
       alt_id: 'item-001',
       name: 'Test Item 1',
       description: 'This is test item 1',
@@ -25,7 +25,7 @@ describe('ItemsRepository', () => {
       last_changed_by: 'system',
     },
     {
-      id: 2,
+      id: '2',
       alt_id: 'item-002',
       name: 'Test Item 2',
       description: 'This is test item 2',
@@ -107,22 +107,22 @@ describe('ItemsRepository', () => {
     it('should return a single item by id', async () => {
       mockTable.first.mockResolvedValue(mockItem);
 
-      const result = await repository.findOne(1);
+      const result = await repository.findOne('1');
 
       expect(result).toEqual(mockItem);
       expect(mockKnex.table).toHaveBeenCalledWith('items');
-      expect(mockTable.where).toHaveBeenCalledWith('id', 1);
+      expect(mockTable.where).toHaveBeenCalledWith('id', '1');
       expect(mockTable.first).toHaveBeenCalled();
     });
 
     it('should return null when item is not found', async () => {
       mockTable.first.mockResolvedValue(null);
 
-      const result = await repository.findOne(999);
+      const result = await repository.findOne('999');
 
       expect(result).toBeNull();
       expect(mockKnex.table).toHaveBeenCalledWith('items');
-      expect(mockTable.where).toHaveBeenCalledWith('id', 999);
+      expect(mockTable.where).toHaveBeenCalledWith('id', '999');
       expect(mockTable.first).toHaveBeenCalled();
     });
 
@@ -130,9 +130,9 @@ describe('ItemsRepository', () => {
       const error = new Error('Database error');
       mockTable.first.mockRejectedValue(error);
 
-      await expect(repository.findOne(1)).rejects.toThrow('Database error');
+      await expect(repository.findOne('1')).rejects.toThrow('Database error');
       expect(mockKnex.table).toHaveBeenCalledWith('items');
-      expect(mockTable.where).toHaveBeenCalledWith('id', 1);
+      expect(mockTable.where).toHaveBeenCalledWith('id', '1');
       expect(mockTable.first).toHaveBeenCalled();
     });
   });
@@ -177,7 +177,7 @@ describe('ItemsRepository', () => {
     it('should create and return a new item', async () => {
       const createdItem = {
         ...mockItemToCreate,
-        id: 3,
+        id: '3',
         alt_id: 'item-003',
         created_by: 'system',
       };
@@ -201,7 +201,7 @@ describe('ItemsRepository', () => {
       };
       const createdItem = {
         ...itemWithCreatedBy,
-        id: 3,
+        id: '3',
         alt_id: 'item-003',
       };
       mockTable.returning.mockResolvedValue([createdItem]);
@@ -236,11 +236,11 @@ describe('ItemsRepository', () => {
       const updatedItem = { ...mockItem, name: 'Updated Item' };
       mockTable.returning.mockResolvedValue([updatedItem]);
 
-      const result = await repository.update(1, itemToUpdate);
+      const result = await repository.update('1', itemToUpdate);
 
       expect(result).toEqual(updatedItem);
       expect(mockKnex.table).toHaveBeenCalledWith('items');
-      expect(mockTable.where).toHaveBeenCalledWith('id', 1);
+      expect(mockTable.where).toHaveBeenCalledWith('id', '1');
       expect(mockTable.update).toHaveBeenCalledWith({
         ...itemToUpdate,
         last_update: expect.any(Date),
@@ -257,11 +257,11 @@ describe('ItemsRepository', () => {
       const updatedItem = { ...mockItem, ...itemToUpdate };
       mockTable.returning.mockResolvedValue([updatedItem]);
 
-      const result = await repository.update(1, itemToUpdate);
+      const result = await repository.update('1', itemToUpdate);
 
       expect(result).toEqual(updatedItem);
       expect(mockKnex.table).toHaveBeenCalledWith('items');
-      expect(mockTable.where).toHaveBeenCalledWith('id', 1);
+      expect(mockTable.where).toHaveBeenCalledWith('id', '1');
       expect(mockTable.update).toHaveBeenCalledWith({
         ...itemToUpdate,
         last_update: expect.any(Date),
@@ -272,11 +272,11 @@ describe('ItemsRepository', () => {
     it('should return null when no item is updated', async () => {
       mockTable.returning.mockResolvedValue([]);
 
-      const result = await repository.update(999, { name: 'Updated Item' });
+      const result = await repository.update('999', { name: 'Updated Item' });
 
       expect(result).toBeUndefined();
       expect(mockKnex.table).toHaveBeenCalledWith('items');
-      expect(mockTable.where).toHaveBeenCalledWith('id', 999);
+      expect(mockTable.where).toHaveBeenCalledWith('id', '999');
       expect(mockTable.update).toHaveBeenCalledWith({
         name: 'Updated Item',
         last_update: expect.any(Date),
@@ -290,10 +290,10 @@ describe('ItemsRepository', () => {
       mockTable.returning.mockRejectedValue(error);
 
       await expect(
-        repository.update(1, { name: 'Updated Item' }),
+        repository.update('1', { name: 'Updated Item' }),
       ).rejects.toThrow('Database error');
       expect(mockKnex.table).toHaveBeenCalledWith('items');
-      expect(mockTable.where).toHaveBeenCalledWith('id', 1);
+      expect(mockTable.where).toHaveBeenCalledWith('id', '1');
       expect(mockTable.update).toHaveBeenCalledWith({
         name: 'Updated Item',
         last_update: expect.any(Date),
@@ -307,20 +307,20 @@ describe('ItemsRepository', () => {
     it('should remove an item', async () => {
       mockTable.delete.mockResolvedValue(1);
 
-      await repository.remove(1);
+      await repository.remove('1');
 
       expect(mockKnex.table).toHaveBeenCalledWith('items');
-      expect(mockTable.where).toHaveBeenCalledWith('id', 1);
+      expect(mockTable.where).toHaveBeenCalledWith('id', '1');
       expect(mockTable.delete).toHaveBeenCalled();
     });
 
     it('should handle case when no item is removed', async () => {
       mockTable.delete.mockResolvedValue(0);
 
-      await repository.remove(999);
+      await repository.remove('999');
 
       expect(mockKnex.table).toHaveBeenCalledWith('items');
-      expect(mockTable.where).toHaveBeenCalledWith('id', 999);
+      expect(mockTable.where).toHaveBeenCalledWith('id', '999');
       expect(mockTable.delete).toHaveBeenCalled();
     });
 
@@ -328,9 +328,9 @@ describe('ItemsRepository', () => {
       const error = new Error('Database error');
       mockTable.delete.mockRejectedValue(error);
 
-      await expect(repository.remove(1)).rejects.toThrow('Database error');
+      await expect(repository.remove('1')).rejects.toThrow('Database error');
       expect(mockKnex.table).toHaveBeenCalledWith('items');
-      expect(mockTable.where).toHaveBeenCalledWith('id', 1);
+      expect(mockTable.where).toHaveBeenCalledWith('id', '1');
       expect(mockTable.delete).toHaveBeenCalled();
     });
   });

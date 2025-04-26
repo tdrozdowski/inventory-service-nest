@@ -79,7 +79,7 @@ export class InvoicesController {
   })
   @ApiResponse({ status: 404, description: 'Invoice not found' })
   async findOne(@Param('id') id: string): Promise<InvoiceDto> {
-    const invoice = await this.invoicesService.findOne(+id);
+    const invoice = await this.invoicesService.findOne(id);
     if (!invoice) {
       throw new NotFoundException(`Invoice with ID ${id} not found`);
     }
@@ -118,7 +118,7 @@ export class InvoicesController {
     @Param('id') id: string,
     @Body() updateInvoiceDto: UpdateInvoiceDto,
   ): Promise<InvoiceDto> {
-    return this.invoicesService.update(+id, updateInvoiceDto);
+    return this.invoicesService.update(id, updateInvoiceDto);
   }
 
   @Delete(':id')
@@ -130,6 +130,6 @@ export class InvoicesController {
   @ApiResponse({ status: 200, description: 'Invoice deleted successfully' })
   @ApiResponse({ status: 404, description: 'Invoice not found' })
   remove(@Param('id') id: string): Promise<void> {
-    return this.invoicesService.remove(+id);
+    return this.invoicesService.remove(id);
   }
 }

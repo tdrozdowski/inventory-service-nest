@@ -11,7 +11,7 @@ describe('InvoicesController', () => {
   // Mock data
   const mockInvoices: Invoice[] = [
     {
-      id: 1,
+      id: '1',
       alt_id: 'invoice-001',
       total: 100.5,
       paid: false,
@@ -22,7 +22,7 @@ describe('InvoicesController', () => {
       last_changed_by: 'system',
     },
     {
-      id: 2,
+      id: '2',
       alt_id: 'invoice-002',
       total: 200.75,
       paid: true,
@@ -33,7 +33,7 @@ describe('InvoicesController', () => {
       last_changed_by: 'system',
     },
     {
-      id: 3,
+      id: '3',
       alt_id: 'invoice-003',
       total: 150.25,
       paid: false,
@@ -117,7 +117,7 @@ describe('InvoicesController', () => {
       const result = await controller.findOne('1');
 
       expect(result).toEqual(mockInvoice);
-      expect(service.findOne).toHaveBeenCalledWith(1);
+      expect(service.findOne).toHaveBeenCalledWith('1');
     });
 
     it('should throw NotFoundException when invoice is not found', async () => {
@@ -126,7 +126,7 @@ describe('InvoicesController', () => {
       await expect(controller.findOne('999')).rejects.toThrow(
         NotFoundException,
       );
-      expect(service.findOne).toHaveBeenCalledWith(999);
+      expect(service.findOne).toHaveBeenCalledWith('999');
     });
 
     it('should propagate errors from service', async () => {
@@ -134,7 +134,7 @@ describe('InvoicesController', () => {
       jest.spyOn(service, 'findOne').mockRejectedValue(error);
 
       await expect(controller.findOne('1')).rejects.toThrow('Service error');
-      expect(service.findOne).toHaveBeenCalledWith(1);
+      expect(service.findOne).toHaveBeenCalledWith('1');
     });
   });
 
@@ -203,7 +203,7 @@ describe('InvoicesController', () => {
     it('should create and return a new invoice', async () => {
       const createdInvoice = {
         ...mockInvoiceToCreate,
-        id: 4,
+        id: '4',
         alt_id: 'invoice-004',
       };
       jest.spyOn(service, 'create').mockResolvedValue(createdInvoice);
@@ -234,7 +234,7 @@ describe('InvoicesController', () => {
       const result = await controller.update('1', invoiceToUpdate);
 
       expect(result).toEqual(updatedInvoice);
-      expect(service.update).toHaveBeenCalledWith(1, invoiceToUpdate);
+      expect(service.update).toHaveBeenCalledWith('1', invoiceToUpdate);
     });
 
     it('should propagate errors from service', async () => {
@@ -245,7 +245,7 @@ describe('InvoicesController', () => {
       await expect(controller.update('1', invoiceToUpdate)).rejects.toThrow(
         'Service error',
       );
-      expect(service.update).toHaveBeenCalledWith(1, invoiceToUpdate);
+      expect(service.update).toHaveBeenCalledWith('1', invoiceToUpdate);
     });
   });
 
@@ -255,7 +255,7 @@ describe('InvoicesController', () => {
 
       await controller.remove('1');
 
-      expect(service.remove).toHaveBeenCalledWith(1);
+      expect(service.remove).toHaveBeenCalledWith('1');
     });
 
     it('should propagate errors from service', async () => {
@@ -263,7 +263,7 @@ describe('InvoicesController', () => {
       jest.spyOn(service, 'remove').mockRejectedValue(error);
 
       await expect(controller.remove('1')).rejects.toThrow('Service error');
-      expect(service.remove).toHaveBeenCalledWith(1);
+      expect(service.remove).toHaveBeenCalledWith('1');
     });
   });
 });

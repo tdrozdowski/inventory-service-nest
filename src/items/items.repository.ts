@@ -15,7 +15,7 @@ export class ItemsRepository {
     }));
   }
 
-  async findOne(id: number): Promise<Item> {
+  async findOne(id: string): Promise<Item> {
     const item = await this.knex.table('items').where('id', id).first();
     if (item) {
       item.unit_price = Number(item.unit_price);
@@ -48,7 +48,7 @@ export class ItemsRepository {
     return result;
   }
 
-  async update(id: number, item: Partial<Item>): Promise<Item> {
+  async update(id: string, item: Partial<Item>): Promise<Item> {
     const itemToUpdate = {
       ...item,
       last_update: new Date(),
@@ -67,7 +67,7 @@ export class ItemsRepository {
     return result;
   }
 
-  async remove(id: number): Promise<void> {
+  async remove(id: string): Promise<void> {
     await this.knex.table('items').where('id', id).delete();
   }
 }

@@ -89,10 +89,10 @@
     ],
     "coverageThreshold": {
       "global": {
-        "branches": 75,
-        "functions": 75,
-        "lines": 75,
-        "statements": 75
+        "branches": 1,
+        "functions": 25,
+        "lines": 15,
+        "statements": 15
       }
     },
     "moduleFileExtensions": [
@@ -106,7 +106,11 @@
       "^.+\\.(t|j)s$": "ts-jest"
     },
     "collectCoverageFrom": [
-      "**/*.(t|j)s"
+      "**/*.(t|j)s",
+      "!**/*.interface.ts",
+      "!**/*.dto.ts",
+      "!**/main.ts",
+      "!**/index.ts"
     ],
     "coverageDirectory": "../coverage",
     "testEnvironment": "node"

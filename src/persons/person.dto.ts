@@ -30,7 +30,7 @@ export class UpdatePersonDto {
 
 export class PersonDto {
   @ApiPropertyOptional({ description: 'The unique identifier for the person' })
-  id?: number;
+  id?: string;
 
   @ApiPropertyOptional({
     description: 'An alternative identifier for the person',

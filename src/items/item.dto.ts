@@ -33,7 +33,7 @@ export class ItemDto {
     description: 'The unique identifier for the item',
     readOnly: true,
   })
-  id?: number;
+  id?: string;
 
   @ApiPropertyOptional({
     description: 'An alternative identifier for the item',

@@ -11,7 +11,7 @@ describe('PersonsController', () => {
   // Mock data
   const mockPersons: Person[] = [
     {
-      id: 1,
+      id: '1',
       alt_id: 'person-001',
       name: 'John Doe',
       email: 'john.doe@example.com',
@@ -21,7 +21,7 @@ describe('PersonsController', () => {
       last_changed_by: 'system',
     },
     {
-      id: 2,
+      id: '2',
       alt_id: 'person-002',
       name: 'Jane Smith',
       email: 'jane.smith@example.com',
@@ -103,7 +103,7 @@ describe('PersonsController', () => {
       const result = await controller.findOne('1');
 
       expect(result).toEqual(mockPerson);
-      expect(service.findOne).toHaveBeenCalledWith(1);
+      expect(service.findOne).toHaveBeenCalledWith('1');
     });
 
     it('should throw NotFoundException when person is not found', async () => {
@@ -112,7 +112,7 @@ describe('PersonsController', () => {
       await expect(controller.findOne('999')).rejects.toThrow(
         NotFoundException,
       );
-      expect(service.findOne).toHaveBeenCalledWith(999);
+      expect(service.findOne).toHaveBeenCalledWith('999');
     });
 
     it('should propagate errors from service', async () => {
@@ -120,7 +120,7 @@ describe('PersonsController', () => {
       jest.spyOn(service, 'findOne').mockRejectedValue(error);
 
       await expect(controller.findOne('1')).rejects.toThrow('Service error');
-      expect(service.findOne).toHaveBeenCalledWith(1);
+      expect(service.findOne).toHaveBeenCalledWith('1');
     });
   });
 
@@ -190,7 +190,7 @@ describe('PersonsController', () => {
     it('should create and return a new person', async () => {
       const createdPerson = {
         ...mockPersonToCreate,
-        id: 3,
+        id: '3',
         alt_id: 'person-003',
       };
       jest.spyOn(service, 'create').mockResolvedValue(createdPerson);
@@ -221,7 +221,7 @@ describe('PersonsController', () => {
       const result = await controller.update('1', personToUpdate);
 
       expect(result).toEqual(updatedPerson);
-      expect(service.update).toHaveBeenCalledWith(1, personToUpdate);
+      expect(service.update).toHaveBeenCalledWith('1', personToUpdate);
     });
 
     it('should propagate errors from service', async () => {
@@ -232,7 +232,7 @@ describe('PersonsController', () => {
       await expect(controller.update('1', personToUpdate)).rejects.toThrow(
         'Service error',
       );
-      expect(service.update).toHaveBeenCalledWith(1, personToUpdate);
+      expect(service.update).toHaveBeenCalledWith('1', personToUpdate);
     });
   });
 
@@ -242,7 +242,7 @@ describe('PersonsController', () => {
 
       await controller.remove('1');
 
-      expect(service.remove).toHaveBeenCalledWith(1);
+      expect(service.remove).toHaveBeenCalledWith('1');
     });
 
     it('should propagate errors from service', async () => {
@@ -250,7 +250,7 @@ describe('PersonsController', () => {
       jest.spyOn(service, 'remove').mockRejectedValue(error);
 
       await expect(controller.remove('1')).rejects.toThrow('Service error');
-      expect(service.remove).toHaveBeenCalledWith(1);
+      expect(service.remove).toHaveBeenCalledWith('1');
     });
   });
 });

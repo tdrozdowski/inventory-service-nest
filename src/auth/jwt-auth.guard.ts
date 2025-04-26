@@ -23,6 +23,9 @@ export class JwtAuthGuard implements CanActivate {
     const isPublic = this.reflector.get<boolean>(
       'isPublic',
       context.getHandler(),
+    ) || this.reflector.get<boolean>(
+      'isPublic',
+      context.getClass(),
     );
     if (isPublic) {
       return true;
@@ -42,7 +45,7 @@ export class JwtAuthGuard implements CanActivate {
       return true;
     } catch (error) {
       console.error(error);
-      throw new UnauthorizedException('Invalid JWT token: ${error.message}');
+      throw new UnauthorizedException(`Invalid JWT token: ${error.message}`);
     }
   }
 
