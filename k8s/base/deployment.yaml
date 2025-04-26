@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: inventory-service-nest
-        image: ghcr.io/tdrozdowski/inventory-service-nest:latest
+        image: ghcr.io/tdrozdowski/inventory-service-nest:0.1.0
         imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 3000
