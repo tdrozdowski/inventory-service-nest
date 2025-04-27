@@ -3,9 +3,19 @@ import { AppModule } from './app.module';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import * as fs from 'fs';
 import * as path from 'path';
+import { LoggerService } from './telemetry/logger.service';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  // Create the application with a temporary logger
+  const app = await NestFactory.create(AppModule, {
+    bufferLogs: true,
+  });
+
+  // Get the logger service from the application context
+  const loggerService = app.get(LoggerService);
+
+  // Set the logger as the global logger
+  app.useLogger(loggerService);
 
   // Set up Swagger documentation
   const config = new DocumentBuilder()

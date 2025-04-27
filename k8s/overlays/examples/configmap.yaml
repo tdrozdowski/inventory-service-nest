@@ -6,3 +6,7 @@ data:
   NODE_ENV: "production"
   DATABASE_HOST: "lab1.local"
   DATABASE_NAME: "inventory"
+  TELEMETRY_OTLP_ENDPOINT: "http://grafana-alloy.examples:4318"
+  TELEMETRY_METRICS_ENDPOINT: "http://grafana-alloy.examples:4318/v1/metrics"
+  TELEMETRY_TRACING_ENDPOINT: "http://grafana-alloy.examples:4318/v1/traces"
+  TELEMETRY_LOGGING_ENDPOINT: "http://grafana-alloy.examples:4318/v1/logs"

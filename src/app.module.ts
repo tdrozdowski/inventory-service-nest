@@ -16,13 +16,16 @@ import { APP_GUARD } from '@nestjs/core';
 import { JwtAuthGuard } from './auth/jwt-auth.guard';
 import databaseConfig from './config/database.config';
 import authConfig from './config/auth.config';
+import telemetryConfig from './config/telemetry.config';
+import { TelemetryModule } from './telemetry/telemetry.module';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
-      load: [databaseConfig, authConfig],
+      load: [databaseConfig, authConfig, telemetryConfig],
     }),
+    TelemetryModule,
     KnexModule.forRootAsync({
       imports: [ConfigModule],
       inject: [ConfigService],

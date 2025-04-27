@@ -7,3 +7,26 @@ data:
   DATABASE_HOST: "postgres"
   DATABASE_PORT: "5432"
   DATABASE_NAME: "inventory"
+
+  # OpenTelemetry Configuration
+  TELEMETRY_ENABLED: "true"
+  TELEMETRY_SERVICE_NAME: "inventory-service"
+  TELEMETRY_SERVICE_VERSION: "1.0.0"
+  TELEMETRY_ENVIRONMENT: "production"
+  TELEMETRY_OTLP_ENDPOINT: "http://otel-collector:4318"
+
+  # OpenTelemetry Metrics Configuration
+  TELEMETRY_METRICS_ENABLED: "true"
+  TELEMETRY_METRICS_INTERVAL: "1000"
+  TELEMETRY_METRICS_ENDPOINT: "http://otel-collector:4318/v1/metrics"
+
+  # OpenTelemetry Tracing Configuration
+  TELEMETRY_TRACING_ENABLED: "true"
+  TELEMETRY_TRACING_ENDPOINT: "http://otel-collector:4318/v1/traces"
+  TELEMETRY_TRACING_SAMPLER: "always_on"
+  TELEMETRY_TRACING_SAMPLING_RATIO: "1.0"
+
+  # OpenTelemetry Logging Configuration
+  TELEMETRY_LOGGING_ENABLED: "true"
+  TELEMETRY_LOGGING_ENDPOINT: "http://otel-collector:4318/v1/logs"
+  TELEMETRY_LOGGING_LEVEL: "info"
